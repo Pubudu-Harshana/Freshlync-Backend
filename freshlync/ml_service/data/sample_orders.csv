@@ -1,0 +1,1001 @@
+date,product_name,category,quantity_sold,price,day_of_week,is_holiday,weather_condition
+2023-01-01,Tomato,vegetable,122,564.17,Sunday,0,sunny
+2023-01-01,Seer Fish,fish,96,1625.21,Sunday,1,cloudy
+2023-01-02,Pork,meat,127,855.6,Monday,0,cloudy
+2023-01-02,Potato,vegetable,114,943.85,Monday,0,rainy
+2023-01-03,Beans,vegetable,106,839.25,Tuesday,0,rainy
+2023-01-04,Tuna,fish,79,1961.28,Wednesday,0,cloudy
+2023-01-05,Carrot,vegetable,19,515.06,Thursday,0,cloudy
+2023-01-06,Tomato,vegetable,100,1166.87,Friday,1,rainy
+2023-01-06,Potato,vegetable,91,628.18,Friday,0,rainy
+2023-01-07,Tomato,vegetable,100,447.48,Saturday,0,sunny
+2023-01-08,Seer Fish,fish,120,579.41,Sunday,0,sunny
+2023-01-08,Beans,vegetable,77,539.43,Sunday,0,rainy
+2023-01-10,Carrot,vegetable,44,957.57,Tuesday,0,cloudy
+2023-01-10,Carrot,vegetable,105,646.86,Tuesday,0,cloudy
+2023-01-11,Tuna,fish,54,1141.97,Wednesday,0,sunny
+2023-01-11,Pork,meat,97,1726.37,Wednesday,0,cloudy
+2023-01-12,Pork,meat,49,1442.03,Thursday,0,sunny
+2023-01-12,Chicken,meat,136,1110.02,Thursday,0,rainy
+2023-01-13,Chicken,meat,102,1462.7,Friday,0,rainy
+2023-01-13,Seer Fish,fish,132,1954.28,Friday,0,rainy
+2023-01-13,Pork,meat,106,882.97,Friday,0,rainy
+2023-01-13,Pork,meat,32,282.77,Friday,0,sunny
+2023-01-13,Tuna,fish,81,1694.67,Friday,1,sunny
+2023-01-15,Carrot,vegetable,105,1165.83,Sunday,0,cloudy
+2023-01-17,Pork,meat,67,570.95,Tuesday,0,sunny
+2023-01-18,Seer Fish,fish,111,224.83,Wednesday,0,sunny
+2023-01-18,Tomato,vegetable,150,1651.1,Wednesday,1,sunny
+2023-01-19,Beans,vegetable,66,1431.76,Thursday,0,rainy
+2023-01-19,Tuna,fish,122,1328.04,Thursday,0,cloudy
+2023-01-20,Potato,vegetable,64,1858.09,Friday,0,cloudy
+2023-01-20,Pork,meat,32,1239.32,Friday,0,rainy
+2023-01-21,Beans,vegetable,53,670.03,Saturday,0,rainy
+2023-01-21,Tuna,fish,52,1441.55,Saturday,0,rainy
+2023-01-22,Beans,vegetable,179,509.37,Sunday,1,rainy
+2023-01-23,Chicken,meat,101,1950.2,Monday,0,sunny
+2023-01-23,Tomato,vegetable,84,658.02,Monday,0,sunny
+2023-01-24,Beans,vegetable,129,1366.35,Tuesday,0,sunny
+2023-01-27,Carrot,vegetable,126,1236.43,Friday,1,rainy
+2023-01-27,Tomato,vegetable,82,1143.17,Friday,1,sunny
+2023-01-27,Carrot,vegetable,39,1290.09,Friday,0,cloudy
+2023-01-28,Potato,vegetable,83,677.95,Saturday,0,cloudy
+2023-01-29,Seer Fish,fish,43,1778.67,Sunday,0,cloudy
+2023-01-29,Potato,vegetable,110,409.28,Sunday,0,cloudy
+2023-01-30,Chicken,meat,64,691.89,Monday,0,rainy
+2023-01-31,Carrot,vegetable,99,305.46,Tuesday,1,cloudy
+2023-01-31,Beans,vegetable,43,1652.79,Tuesday,0,sunny
+2023-02-01,Pork,meat,121,870.44,Wednesday,0,sunny
+2023-02-01,Potato,vegetable,48,1800.19,Wednesday,0,cloudy
+2023-02-01,Chicken,meat,28,1727.6,Wednesday,0,rainy
+2023-02-02,Tomato,vegetable,85,1384.26,Thursday,0,cloudy
+2023-02-02,Beans,vegetable,122,922.1,Thursday,0,cloudy
+2023-02-03,Beans,vegetable,104,1665.25,Friday,0,cloudy
+2023-02-03,Potato,vegetable,45,291.01,Friday,0,sunny
+2023-02-05,Beans,vegetable,96,1748.66,Sunday,0,rainy
+2023-02-06,Pork,meat,78,817.7,Monday,0,cloudy
+2023-02-06,Tomato,vegetable,50,604.13,Monday,0,cloudy
+2023-02-07,Tomato,vegetable,121,1618.33,Tuesday,0,cloudy
+2023-02-07,Chicken,meat,48,1736.89,Tuesday,0,cloudy
+2023-02-08,Seer Fish,fish,93,331.85,Wednesday,0,rainy
+2023-02-08,Pork,meat,112,1844.04,Wednesday,0,sunny
+2023-02-09,Potato,vegetable,73,600.38,Thursday,0,rainy
+2023-02-09,Seer Fish,fish,94,1273.83,Thursday,0,rainy
+2023-02-09,Chicken,meat,68,1484.47,Thursday,0,cloudy
+2023-02-10,Pork,meat,75,1860.09,Friday,0,rainy
+2023-02-10,Seer Fish,fish,95,538.69,Friday,0,cloudy
+2023-02-12,Beans,vegetable,70,1880.07,Sunday,0,cloudy
+2023-02-12,Potato,vegetable,51,1836.29,Sunday,0,sunny
+2023-02-14,Carrot,vegetable,89,506.58,Tuesday,0,cloudy
+2023-02-16,Carrot,vegetable,119,1372.03,Thursday,0,rainy
+2023-02-19,Tuna,fish,96,706.44,Sunday,0,cloudy
+2023-02-20,Potato,vegetable,53,1857.5,Monday,0,sunny
+2023-02-20,Pork,meat,128,724.12,Monday,0,rainy
+2023-02-21,Tuna,fish,64,1944.19,Tuesday,1,sunny
+2023-02-21,Seer Fish,fish,76,1663.72,Tuesday,0,rainy
+2023-02-23,Seer Fish,fish,97,943.94,Thursday,0,sunny
+2023-02-23,Chicken,meat,61,601.73,Thursday,0,sunny
+2023-02-24,Seer Fish,fish,121,1050.0,Friday,0,sunny
+2023-02-25,Pork,meat,54,1908.09,Saturday,1,rainy
+2023-02-26,Carrot,vegetable,25,1398.94,Sunday,0,sunny
+2023-02-26,Seer Fish,fish,51,1132.58,Sunday,0,sunny
+2023-02-28,Tomato,vegetable,13,1388.95,Tuesday,0,cloudy
+2023-03-02,Pork,meat,45,321.32,Thursday,0,rainy
+2023-03-03,Beans,vegetable,26,1360.23,Friday,0,sunny
+2023-03-04,Beans,vegetable,157,1204.44,Saturday,1,rainy
+2023-03-04,Seer Fish,fish,92,703.6,Saturday,0,sunny
+2023-03-06,Carrot,vegetable,77,1378.95,Monday,0,cloudy
+2023-03-07,Tomato,vegetable,33,933.68,Tuesday,0,rainy
+2023-03-10,Pork,meat,93,1601.33,Friday,0,rainy
+2023-03-10,Seer Fish,fish,137,898.58,Friday,0,rainy
+2023-03-11,Beans,vegetable,16,661.98,Saturday,0,sunny
+2023-03-11,Potato,vegetable,96,995.97,Saturday,0,rainy
+2023-03-12,Potato,vegetable,108,257.12,Sunday,0,sunny
+2023-03-12,Chicken,meat,113,445.92,Sunday,0,rainy
+2023-03-12,Potato,vegetable,63,1758.86,Sunday,0,rainy
+2023-03-14,Tuna,fish,106,1976.39,Tuesday,1,sunny
+2023-03-16,Tuna,fish,17,962.66,Thursday,0,cloudy
+2023-03-16,Beans,vegetable,48,1870.49,Thursday,0,cloudy
+2023-03-16,Tuna,fish,56,1024.91,Thursday,1,sunny
+2023-03-17,Seer Fish,fish,29,682.35,Friday,0,cloudy
+2023-03-18,Potato,vegetable,98,1606.75,Saturday,0,cloudy
+2023-03-18,Potato,vegetable,42,777.14,Saturday,0,rainy
+2023-03-18,Chicken,meat,70,204.82,Saturday,0,cloudy
+2023-03-19,Chicken,meat,102,1557.47,Sunday,0,cloudy
+2023-03-19,Tuna,fish,84,1729.26,Sunday,0,cloudy
+2023-03-19,Pork,meat,86,383.42,Sunday,0,cloudy
+2023-03-21,Carrot,vegetable,92,877.39,Tuesday,1,cloudy
+2023-03-22,Tomato,vegetable,28,1315.48,Wednesday,0,cloudy
+2023-03-22,Potato,vegetable,15,1304.89,Wednesday,0,cloudy
+2023-03-22,Beans,vegetable,53,296.65,Wednesday,0,sunny
+2023-03-25,Carrot,vegetable,66,997.6,Saturday,0,cloudy
+2023-03-26,Chicken,meat,127,699.44,Sunday,0,cloudy
+2023-03-27,Tomato,vegetable,43,444.26,Monday,0,sunny
+2023-03-27,Carrot,vegetable,44,1276.93,Monday,0,rainy
+2023-03-28,Chicken,meat,103,270.46,Tuesday,0,rainy
+2023-03-28,Tuna,fish,96,480.04,Tuesday,0,sunny
+2023-03-29,Potato,vegetable,132,1668.84,Wednesday,1,cloudy
+2023-03-29,Seer Fish,fish,127,977.38,Wednesday,0,rainy
+2023-03-30,Seer Fish,fish,107,756.72,Thursday,1,cloudy
+2023-03-31,Beans,vegetable,108,1040.38,Friday,0,cloudy
+2023-03-31,Potato,vegetable,46,1503.33,Friday,0,cloudy
+2023-03-31,Tomato,vegetable,97,1137.29,Friday,0,cloudy
+2023-04-01,Tomato,vegetable,61,1720.07,Saturday,0,cloudy
+2023-04-02,Seer Fish,fish,54,1409.15,Sunday,0,rainy
+2023-04-02,Potato,vegetable,48,754.16,Sunday,0,sunny
+2023-04-03,Tomato,vegetable,115,1109.8,Monday,1,sunny
+2023-04-03,Carrot,vegetable,54,1507.05,Monday,0,cloudy
+2023-04-05,Pork,meat,87,292.77,Wednesday,0,cloudy
+2023-04-05,Tomato,vegetable,102,1224.32,Wednesday,0,sunny
+2023-04-06,Carrot,vegetable,107,781.08,Thursday,0,sunny
+2023-04-06,Tomato,vegetable,93,1128.1,Thursday,0,rainy
+2023-04-06,Beans,vegetable,85,1666.94,Thursday,0,rainy
+2023-04-06,Potato,vegetable,100,375.07,Thursday,0,cloudy
+2023-04-07,Tomato,vegetable,126,711.46,Friday,0,cloudy
+2023-04-08,Chicken,meat,45,1932.99,Saturday,0,sunny
+2023-04-10,Tuna,fish,63,722.38,Monday,0,cloudy
+2023-04-10,Seer Fish,fish,134,1402.65,Monday,0,rainy
+2023-04-10,Tomato,vegetable,16,837.74,Monday,0,cloudy
+2023-04-11,Pork,meat,175,441.89,Tuesday,1,rainy
+2023-04-12,Beans,vegetable,67,1180.04,Wednesday,1,rainy
+2023-04-12,Potato,vegetable,100,229.31,Wednesday,1,sunny
+2023-04-13,Potato,vegetable,29,227.63,Thursday,0,cloudy
+2023-04-13,Pork,meat,88,1115.02,Thursday,0,cloudy
+2023-04-14,Carrot,vegetable,67,1359.81,Friday,0,rainy
+2023-04-15,Chicken,meat,43,858.43,Saturday,0,sunny
+2023-04-15,Pork,meat,86,735.88,Saturday,1,rainy
+2023-04-15,Seer Fish,fish,37,1262.89,Saturday,0,sunny
+2023-04-15,Seer Fish,fish,58,764.03,Saturday,0,sunny
+2023-04-16,Seer Fish,fish,93,713.11,Sunday,0,rainy
+2023-04-16,Chicken,meat,107,660.74,Sunday,0,sunny
+2023-04-16,Tomato,vegetable,111,1671.6,Sunday,0,rainy
+2023-04-19,Tomato,vegetable,100,296.84,Wednesday,0,sunny
+2023-04-20,Tomato,vegetable,76,593.91,Thursday,0,cloudy
+2023-04-21,Tomato,vegetable,85,283.7,Friday,0,cloudy
+2023-04-22,Potato,vegetable,148,1106.91,Saturday,1,sunny
+2023-04-25,Tuna,fish,120,1691.79,Tuesday,1,sunny
+2023-04-26,Chicken,meat,23,1453.11,Wednesday,0,sunny
+2023-04-26,Pork,meat,111,1339.24,Wednesday,0,sunny
+2023-04-28,Carrot,vegetable,108,1233.38,Friday,0,cloudy
+2023-04-28,Carrot,vegetable,80,1583.48,Friday,0,rainy
+2023-05-01,Chicken,meat,100,1097.08,Monday,0,cloudy
+2023-05-02,Pork,meat,71,946.3,Tuesday,0,sunny
+2023-05-02,Tomato,vegetable,109,1291.37,Tuesday,0,sunny
+2023-05-03,Seer Fish,fish,99,483.71,Wednesday,0,cloudy
+2023-05-04,Tuna,fish,44,824.97,Thursday,0,rainy
+2023-05-04,Beans,vegetable,87,1936.34,Thursday,0,rainy
+2023-05-07,Beans,vegetable,152,1480.0,Sunday,0,rainy
+2023-05-07,Potato,vegetable,27,1023.3,Sunday,0,cloudy
+2023-05-07,Tomato,vegetable,41,832.76,Sunday,0,sunny
+2023-05-11,Tuna,fish,125,754.87,Thursday,0,sunny
+2023-05-12,Seer Fish,fish,36,1829.14,Friday,0,rainy
+2023-05-12,Potato,vegetable,121,1904.33,Friday,0,cloudy
+2023-05-12,Seer Fish,fish,102,909.03,Friday,0,rainy
+2023-05-13,Chicken,meat,47,1772.29,Saturday,0,rainy
+2023-05-13,Potato,vegetable,128,1135.47,Saturday,0,rainy
+2023-05-14,Potato,vegetable,77,1856.72,Sunday,0,rainy
+2023-05-14,Potato,vegetable,15,1618.95,Sunday,0,sunny
+2023-05-15,Pork,meat,81,1665.54,Monday,0,sunny
+2023-05-16,Pork,meat,120,1504.23,Tuesday,0,cloudy
+2023-05-16,Chicken,meat,106,1282.06,Tuesday,0,rainy
+2023-05-16,Tomato,vegetable,115,1022.24,Tuesday,0,rainy
+2023-05-17,Potato,vegetable,57,475.73,Wednesday,0,cloudy
+2023-05-17,Chicken,meat,93,323.14,Wednesday,0,cloudy
+2023-05-17,Tomato,vegetable,108,334.69,Wednesday,0,rainy
+2023-05-18,Beans,vegetable,128,1780.19,Thursday,0,rainy
+2023-05-18,Tuna,fish,43,1803.44,Thursday,0,sunny
+2023-05-18,Carrot,vegetable,29,407.77,Thursday,0,cloudy
+2023-05-18,Potato,vegetable,54,691.11,Thursday,0,rainy
+2023-05-19,Potato,vegetable,83,1206.73,Friday,0,cloudy
+2023-05-19,Tomato,vegetable,68,944.41,Friday,0,sunny
+2023-05-20,Carrot,vegetable,101,777.2,Saturday,1,sunny
+2023-05-20,Seer Fish,fish,79,697.25,Saturday,0,rainy
+2023-05-20,Pork,meat,128,1667.39,Saturday,1,cloudy
+2023-05-21,Tuna,fish,102,1936.13,Sunday,1,sunny
+2023-05-21,Carrot,vegetable,128,721.0,Sunday,0,rainy
+2023-05-21,Chicken,meat,128,547.87,Sunday,0,sunny
+2023-05-21,Chicken,meat,74,338.9,Sunday,0,sunny
+2023-05-22,Chicken,meat,44,791.59,Monday,0,cloudy
+2023-05-22,Chicken,meat,37,616.27,Monday,0,cloudy
+2023-05-22,Tomato,vegetable,48,1284.54,Monday,0,cloudy
+2023-05-23,Carrot,vegetable,64,635.64,Tuesday,0,cloudy
+2023-05-23,Potato,vegetable,45,498.09,Tuesday,0,cloudy
+2023-05-23,Pork,meat,54,1664.35,Tuesday,0,cloudy
+2023-05-23,Pork,meat,83,1622.67,Tuesday,0,cloudy
+2023-05-26,Carrot,vegetable,104,367.45,Friday,1,cloudy
+2023-05-27,Pork,meat,85,944.41,Saturday,0,cloudy
+2023-05-27,Carrot,vegetable,43,451.33,Saturday,0,cloudy
+2023-05-28,Pork,meat,15,1284.43,Sunday,0,sunny
+2023-05-29,Tomato,vegetable,122,543.1,Monday,0,cloudy
+2023-05-29,Chicken,meat,157,1353.05,Monday,1,rainy
+2023-05-29,Potato,vegetable,43,1866.55,Monday,0,sunny
+2023-05-30,Tuna,fish,135,669.39,Tuesday,1,cloudy
+2023-05-30,Potato,vegetable,51,1890.52,Tuesday,0,rainy
+2023-05-30,Carrot,vegetable,103,275.72,Tuesday,1,sunny
+2023-05-31,Tomato,vegetable,164,365.08,Wednesday,1,rainy
+2023-06-01,Chicken,meat,40,1593.86,Thursday,0,rainy
+2023-06-02,Chicken,meat,60,790.34,Friday,0,sunny
+2023-06-03,Chicken,meat,97,790.61,Saturday,0,sunny
+2023-06-04,Tuna,fish,89,593.7,Sunday,0,sunny
+2023-06-06,Beans,vegetable,40,1653.86,Tuesday,1,sunny
+2023-06-06,Tuna,fish,173,1412.54,Tuesday,1,rainy
+2023-06-09,Seer Fish,fish,56,1378.7,Friday,0,rainy
+2023-06-11,Seer Fish,fish,117,1994.27,Sunday,0,rainy
+2023-06-11,Potato,vegetable,17,364.52,Sunday,0,cloudy
+2023-06-12,Potato,vegetable,88,1613.38,Monday,0,sunny
+2023-06-12,Tuna,fish,42,1540.5,Monday,0,sunny
+2023-06-13,Potato,vegetable,83,1992.74,Tuesday,0,rainy
+2023-06-13,Tomato,vegetable,35,812.45,Tuesday,0,rainy
+2023-06-14,Seer Fish,fish,53,1184.68,Wednesday,0,sunny
+2023-06-14,Tuna,fish,164,1186.65,Wednesday,1,cloudy
+2023-06-17,Tomato,vegetable,64,1691.17,Saturday,0,sunny
+2023-06-18,Potato,vegetable,29,832.14,Sunday,0,cloudy
+2023-06-19,Tomato,vegetable,120,537.28,Monday,0,rainy
+2023-06-19,Chicken,meat,94,1003.2,Monday,0,cloudy
+2023-06-20,Tuna,fish,61,1213.8,Tuesday,0,cloudy
+2023-06-20,Tomato,vegetable,91,385.42,Tuesday,0,rainy
+2023-06-21,Seer Fish,fish,94,1682.92,Wednesday,0,rainy
+2023-06-22,Seer Fish,fish,34,1118.87,Thursday,0,cloudy
+2023-06-24,Carrot,vegetable,75,1582.29,Saturday,0,sunny
+2023-06-24,Chicken,meat,43,728.81,Saturday,0,cloudy
+2023-06-26,Potato,vegetable,116,1995.07,Monday,0,rainy
+2023-06-27,Pork,meat,41,1775.33,Tuesday,0,sunny
+2023-06-28,Carrot,vegetable,62,930.94,Wednesday,0,rainy
+2023-06-29,Chicken,meat,81,884.37,Thursday,0,cloudy
+2023-06-29,Tomato,vegetable,160,1200.53,Thursday,0,rainy
+2023-06-29,Potato,vegetable,61,1134.13,Thursday,0,rainy
+2023-07-01,Tomato,vegetable,91,1943.71,Saturday,0,cloudy
+2023-07-01,Tomato,vegetable,133,244.62,Saturday,0,rainy
+2023-07-02,Beans,vegetable,71,1478.63,Sunday,0,cloudy
+2023-07-03,Carrot,vegetable,26,225.47,Monday,0,rainy
+2023-07-04,Seer Fish,fish,50,1077.65,Tuesday,0,sunny
+2023-07-04,Tomato,vegetable,122,1278.84,Tuesday,0,sunny
+2023-07-05,Seer Fish,fish,133,1817.38,Wednesday,1,sunny
+2023-07-05,Chicken,meat,104,1219.38,Wednesday,0,sunny
+2023-07-08,Pork,meat,33,1310.39,Saturday,0,sunny
+2023-07-08,Beans,vegetable,107,1711.14,Saturday,0,sunny
+2023-07-09,Tuna,fish,40,1315.52,Sunday,0,cloudy
+2023-07-11,Seer Fish,fish,79,1142.27,Tuesday,0,cloudy
+2023-07-11,Chicken,meat,64,1523.14,Tuesday,0,sunny
+2023-07-11,Carrot,vegetable,53,626.85,Tuesday,0,cloudy
+2023-07-13,Seer Fish,fish,108,257.99,Thursday,0,cloudy
+2023-07-14,Chicken,meat,74,1178.52,Friday,0,rainy
+2023-07-14,Seer Fish,fish,94,1908.22,Friday,0,sunny
+2023-07-16,Tomato,vegetable,125,1396.87,Sunday,0,cloudy
+2023-07-16,Pork,meat,107,1529.49,Sunday,0,cloudy
+2023-07-16,Pork,meat,45,1165.31,Sunday,0,sunny
+2023-07-17,Beans,vegetable,33,415.2,Monday,0,cloudy
+2023-07-19,Beans,vegetable,67,1195.8,Wednesday,0,cloudy
+2023-07-19,Tuna,fish,39,1611.13,Wednesday,0,cloudy
+2023-07-20,Pork,meat,79,636.17,Thursday,0,rainy
+2023-07-21,Carrot,vegetable,21,425.31,Friday,0,cloudy
+2023-07-22,Potato,vegetable,37,1265.97,Saturday,0,cloudy
+2023-07-22,Tomato,vegetable,126,406.6,Saturday,0,sunny
+2023-07-23,Tomato,vegetable,104,1736.0,Sunday,0,rainy
+2023-07-24,Carrot,vegetable,152,1696.7,Monday,1,rainy
+2023-07-24,Beans,vegetable,34,1910.12,Monday,0,cloudy
+2023-07-24,Pork,meat,39,1523.77,Monday,0,sunny
+2023-07-24,Tuna,fish,108,1318.4,Monday,0,rainy
+2023-07-25,Beans,vegetable,48,936.55,Tuesday,0,rainy
+2023-07-26,Chicken,meat,27,813.37,Wednesday,0,rainy
+2023-07-26,Chicken,meat,127,1701.39,Wednesday,0,cloudy
+2023-07-27,Pork,meat,25,1705.4,Thursday,0,sunny
+2023-07-27,Potato,vegetable,140,1693.97,Thursday,1,cloudy
+2023-07-28,Beans,vegetable,104,763.26,Friday,0,sunny
+2023-07-28,Chicken,meat,107,1165.5,Friday,0,cloudy
+2023-07-29,Seer Fish,fish,184,518.74,Saturday,1,rainy
+2023-07-30,Carrot,vegetable,83,1554.19,Sunday,0,sunny
+2023-07-30,Potato,vegetable,68,363.69,Sunday,0,sunny
+2023-08-02,Potato,vegetable,142,1871.13,Wednesday,0,rainy
+2023-08-03,Beans,vegetable,50,561.0,Thursday,0,cloudy
+2023-08-03,Carrot,vegetable,140,1435.9,Thursday,1,sunny
+2023-08-05,Pork,meat,144,1931.74,Saturday,0,rainy
+2023-08-05,Chicken,meat,114,536.43,Saturday,0,cloudy
+2023-08-05,Potato,vegetable,108,683.37,Saturday,0,rainy
+2023-08-05,Carrot,vegetable,80,1388.77,Saturday,0,sunny
+2023-08-05,Tomato,vegetable,30,1830.13,Saturday,0,sunny
+2023-08-05,Pork,meat,71,1183.56,Saturday,0,cloudy
+2023-08-05,Pork,meat,65,427.13,Saturday,0,cloudy
+2023-08-06,Tuna,fish,110,291.04,Sunday,0,sunny
+2023-08-07,Carrot,vegetable,122,438.42,Monday,0,sunny
+2023-08-08,Pork,meat,116,1365.28,Tuesday,0,rainy
+2023-08-08,Beans,vegetable,115,239.06,Tuesday,0,cloudy
+2023-08-10,Pork,meat,10,791.41,Thursday,0,cloudy
+2023-08-11,Tuna,fish,163,452.24,Friday,1,sunny
+2023-08-12,Potato,vegetable,60,743.86,Saturday,0,cloudy
+2023-08-14,Pork,meat,103,1640.29,Monday,0,rainy
+2023-08-16,Beans,vegetable,130,601.99,Wednesday,0,rainy
+2023-08-16,Beans,vegetable,151,344.07,Wednesday,0,rainy
+2023-08-17,Potato,vegetable,70,797.55,Thursday,0,cloudy
+2023-08-17,Tomato,vegetable,94,925.9,Thursday,0,rainy
+2023-08-18,Tuna,fish,93,773.63,Friday,0,cloudy
+2023-08-18,Chicken,meat,31,580.14,Friday,0,cloudy
+2023-08-18,Seer Fish,fish,41,1606.22,Friday,0,sunny
+2023-08-19,Pork,meat,100,465.24,Saturday,0,rainy
+2023-08-19,Carrot,vegetable,108,502.78,Saturday,0,cloudy
+2023-08-19,Carrot,vegetable,138,1743.57,Saturday,0,rainy
+2023-08-20,Carrot,vegetable,95,1215.64,Sunday,0,cloudy
+2023-08-20,Potato,vegetable,120,216.72,Sunday,0,sunny
+2023-08-21,Tuna,fish,103,1713.43,Monday,0,rainy
+2023-08-21,Tomato,vegetable,155,632.65,Monday,0,rainy
+2023-08-22,Pork,meat,57,242.6,Tuesday,0,rainy
+2023-08-22,Tuna,fish,102,1250.34,Tuesday,0,cloudy
+2023-08-22,Carrot,vegetable,58,1973.4,Tuesday,0,sunny
+2023-08-25,Tomato,vegetable,101,1115.37,Friday,0,rainy
+2023-08-25,Tuna,fish,53,846.67,Friday,0,rainy
+2023-08-26,Potato,vegetable,11,1348.23,Saturday,0,cloudy
+2023-08-27,Tuna,fish,79,1210.24,Sunday,0,cloudy
+2023-08-29,Seer Fish,fish,50,713.25,Tuesday,0,sunny
+2023-08-29,Carrot,vegetable,36,1892.79,Tuesday,0,sunny
+2023-08-31,Carrot,vegetable,119,669.78,Thursday,0,rainy
+2023-09-01,Beans,vegetable,115,1968.28,Friday,0,sunny
+2023-09-01,Carrot,vegetable,102,1404.16,Friday,0,sunny
+2023-09-02,Carrot,vegetable,88,912.41,Saturday,0,rainy
+2023-09-02,Tomato,vegetable,50,620.41,Saturday,0,sunny
+2023-09-02,Carrot,vegetable,57,1938.07,Saturday,0,sunny
+2023-09-02,Tomato,vegetable,24,1350.11,Saturday,0,sunny
+2023-09-03,Potato,vegetable,86,894.59,Sunday,0,cloudy
+2023-09-04,Seer Fish,fish,38,1588.7,Monday,0,rainy
+2023-09-06,Carrot,vegetable,139,566.01,Wednesday,0,rainy
+2023-09-06,Tuna,fish,39,1405.7,Wednesday,0,cloudy
+2023-09-07,Beans,vegetable,152,1930.23,Thursday,0,rainy
+2023-09-07,Chicken,meat,86,1193.44,Thursday,0,rainy
+2023-09-08,Beans,vegetable,100,712.98,Friday,0,cloudy
+2023-09-08,Seer Fish,fish,87,1864.33,Friday,0,cloudy
+2023-09-09,Tomato,vegetable,106,1970.9,Saturday,0,rainy
+2023-09-09,Potato,vegetable,111,1191.16,Saturday,1,rainy
+2023-09-10,Pork,meat,138,1481.96,Sunday,0,rainy
+2023-09-11,Seer Fish,fish,47,1145.91,Monday,0,rainy
+2023-09-11,Tuna,fish,76,558.52,Monday,0,sunny
+2023-09-12,Chicken,meat,76,1664.26,Tuesday,1,cloudy
+2023-09-13,Seer Fish,fish,59,246.64,Wednesday,0,cloudy
+2023-09-14,Tuna,fish,129,1354.12,Thursday,0,cloudy
+2023-09-14,Tuna,fish,104,1073.54,Thursday,0,rainy
+2023-09-14,Seer Fish,fish,48,869.32,Thursday,1,sunny
+2023-09-16,Beans,vegetable,115,408.66,Saturday,0,cloudy
+2023-09-16,Potato,vegetable,47,405.36,Saturday,0,rainy
+2023-09-16,Seer Fish,fish,54,1046.55,Saturday,0,sunny
+2023-09-16,Potato,vegetable,90,1463.36,Saturday,0,cloudy
+2023-09-17,Tuna,fish,113,1025.56,Sunday,0,cloudy
+2023-09-17,Tuna,fish,131,1555.92,Sunday,0,rainy
+2023-09-18,Potato,vegetable,52,1710.15,Monday,0,cloudy
+2023-09-19,Tuna,fish,93,1269.06,Tuesday,0,sunny
+2023-09-20,Tuna,fish,11,859.44,Wednesday,0,sunny
+2023-09-20,Pork,meat,87,1702.93,Wednesday,0,cloudy
+2023-09-22,Beans,vegetable,91,703.39,Friday,0,rainy
+2023-09-23,Chicken,meat,116,869.36,Saturday,0,rainy
+2023-09-23,Seer Fish,fish,66,239.24,Saturday,0,cloudy
+2023-09-24,Beans,vegetable,64,848.55,Sunday,0,rainy
+2023-09-26,Seer Fish,fish,26,917.35,Tuesday,0,cloudy
+2023-09-27,Chicken,meat,93,877.99,Wednesday,0,cloudy
+2023-09-28,Beans,vegetable,126,621.23,Thursday,0,cloudy
+2023-09-29,Beans,vegetable,132,1801.33,Friday,0,rainy
+2023-09-30,Chicken,meat,114,328.54,Saturday,0,rainy
+2023-09-30,Tuna,fish,163,1575.29,Saturday,1,cloudy
+2023-10-01,Beans,vegetable,43,743.5,Sunday,0,sunny
+2023-10-01,Tuna,fish,84,709.11,Sunday,0,cloudy
+2023-10-01,Tomato,vegetable,126,342.23,Sunday,1,rainy
+2023-10-02,Beans,vegetable,45,1733.08,Monday,0,sunny
+2023-10-03,Carrot,vegetable,65,683.13,Tuesday,0,sunny
+2023-10-03,Tomato,vegetable,60,1288.96,Tuesday,0,rainy
+2023-10-04,Tomato,vegetable,106,600.6,Wednesday,0,sunny
+2023-10-04,Seer Fish,fish,108,438.51,Wednesday,0,rainy
+2023-10-05,Tuna,fish,100,1036.93,Thursday,1,sunny
+2023-10-05,Seer Fish,fish,125,1228.76,Thursday,0,cloudy
+2023-10-05,Beans,vegetable,59,1755.71,Thursday,0,cloudy
+2023-10-06,Tomato,vegetable,108,1441.82,Friday,0,rainy
+2023-10-06,Potato,vegetable,124,987.97,Friday,0,rainy
+2023-10-06,Potato,vegetable,78,538.02,Friday,0,sunny
+2023-10-06,Carrot,vegetable,97,1288.69,Friday,0,sunny
+2023-10-06,Potato,vegetable,70,443.21,Friday,1,cloudy
+2023-10-07,Tomato,vegetable,105,1702.5,Saturday,1,sunny
+2023-10-09,Carrot,vegetable,89,1002.82,Monday,0,cloudy
+2023-10-09,Tuna,fish,90,335.07,Monday,0,rainy
+2023-10-09,Tuna,fish,16,1218.67,Monday,0,cloudy
+2023-10-09,Beans,vegetable,36,1148.69,Monday,0,cloudy
+2023-10-09,Potato,vegetable,45,529.17,Monday,0,cloudy
+2023-10-10,Tomato,vegetable,59,739.55,Tuesday,0,rainy
+2023-10-10,Tuna,fish,130,1326.43,Tuesday,0,sunny
+2023-10-10,Seer Fish,fish,84,912.45,Tuesday,0,sunny
+2023-10-10,Chicken,meat,27,369.72,Tuesday,0,sunny
+2023-10-11,Beans,vegetable,124,1750.68,Wednesday,0,cloudy
+2023-10-11,Chicken,meat,24,1977.55,Wednesday,0,sunny
+2023-10-11,Seer Fish,fish,87,646.7,Wednesday,0,cloudy
+2023-10-12,Potato,vegetable,71,1344.23,Thursday,0,rainy
+2023-10-13,Beans,vegetable,52,1354.67,Friday,0,cloudy
+2023-10-13,Carrot,vegetable,30,434.12,Friday,0,rainy
+2023-10-14,Tuna,fish,61,1442.51,Saturday,0,rainy
+2023-10-15,Tuna,fish,117,810.47,Sunday,0,cloudy
+2023-10-18,Potato,vegetable,60,1148.48,Wednesday,0,sunny
+2023-10-18,Potato,vegetable,13,1327.67,Wednesday,0,sunny
+2023-10-19,Tuna,fish,109,895.82,Thursday,0,cloudy
+2023-10-19,Tuna,fish,56,1131.7,Thursday,1,rainy
+2023-10-19,Tuna,fish,62,1726.21,Thursday,0,rainy
+2023-10-20,Pork,meat,20,689.09,Friday,0,cloudy
+2023-10-20,Potato,vegetable,67,560.32,Friday,0,sunny
+2023-10-20,Beans,vegetable,72,1780.21,Friday,0,cloudy
+2023-10-21,Potato,vegetable,131,1163.18,Saturday,0,rainy
+2023-10-21,Seer Fish,fish,127,1360.4,Saturday,1,sunny
+2023-10-22,Seer Fish,fish,135,1232.26,Sunday,0,rainy
+2023-10-22,Carrot,vegetable,29,832.96,Sunday,0,sunny
+2023-10-22,Potato,vegetable,90,1785.52,Sunday,0,sunny
+2023-10-23,Potato,vegetable,61,423.84,Monday,0,cloudy
+2023-10-23,Tomato,vegetable,41,1664.42,Monday,0,rainy
+2023-10-24,Tuna,fish,128,216.68,Tuesday,0,sunny
+2023-10-24,Carrot,vegetable,114,1914.32,Tuesday,0,cloudy
+2023-10-25,Chicken,meat,82,1036.46,Wednesday,0,rainy
+2023-10-26,Carrot,vegetable,130,1289.69,Thursday,0,rainy
+2023-10-26,Seer Fish,fish,95,1052.43,Thursday,0,rainy
+2023-10-26,Tuna,fish,120,616.66,Thursday,0,cloudy
+2023-10-26,Tomato,vegetable,63,202.82,Thursday,0,cloudy
+2023-10-29,Pork,meat,84,927.92,Sunday,0,cloudy
+2023-10-30,Chicken,meat,92,736.5,Monday,0,cloudy
+2023-10-30,Beans,vegetable,110,1545.47,Monday,0,sunny
+2023-10-30,Chicken,meat,116,553.15,Monday,0,cloudy
+2023-11-03,Tuna,fish,39,1578.56,Friday,0,cloudy
+2023-11-03,Carrot,vegetable,143,1676.16,Friday,0,rainy
+2023-11-03,Chicken,meat,123,1215.12,Friday,0,rainy
+2023-11-04,Beans,vegetable,75,1580.66,Saturday,0,rainy
+2023-11-04,Tomato,vegetable,118,530.98,Saturday,0,sunny
+2023-11-04,Seer Fish,fish,21,1376.72,Saturday,0,sunny
+2023-11-06,Tuna,fish,23,1402.15,Monday,0,cloudy
+2023-11-07,Carrot,vegetable,97,704.62,Tuesday,0,cloudy
+2023-11-08,Pork,meat,124,1035.07,Wednesday,0,rainy
+2023-11-08,Tuna,fish,58,1907.88,Wednesday,0,cloudy
+2023-11-09,Potato,vegetable,78,1048.14,Thursday,0,cloudy
+2023-11-09,Tuna,fish,90,1297.34,Thursday,0,sunny
+2023-11-11,Seer Fish,fish,133,569.35,Saturday,1,rainy
+2023-11-11,Carrot,vegetable,83,429.23,Saturday,0,cloudy
+2023-11-11,Chicken,meat,108,929.75,Saturday,0,cloudy
+2023-11-13,Chicken,meat,51,1912.1,Monday,0,rainy
+2023-11-14,Beans,vegetable,96,457.93,Tuesday,0,cloudy
+2023-11-15,Tomato,vegetable,13,444.17,Wednesday,0,cloudy
+2023-11-15,Seer Fish,fish,132,1349.68,Wednesday,1,rainy
+2023-11-17,Seer Fish,fish,112,629.43,Friday,0,rainy
+2023-11-19,Potato,vegetable,72,1314.94,Sunday,0,sunny
+2023-11-19,Pork,meat,68,1379.79,Sunday,0,cloudy
+2023-11-21,Potato,vegetable,40,1770.29,Tuesday,0,sunny
+2023-11-22,Potato,vegetable,27,689.52,Wednesday,0,sunny
+2023-11-23,Tomato,vegetable,129,1930.15,Thursday,0,cloudy
+2023-11-23,Pork,meat,28,1039.65,Thursday,0,sunny
+2023-11-25,Seer Fish,fish,60,1384.92,Saturday,0,rainy
+2023-11-25,Seer Fish,fish,78,1906.78,Saturday,0,cloudy
+2023-11-26,Chicken,meat,84,318.23,Sunday,0,cloudy
+2023-11-26,Pork,meat,56,1570.65,Sunday,0,rainy
+2023-11-28,Tuna,fish,63,513.64,Tuesday,0,cloudy
+2023-11-29,Potato,vegetable,99,511.22,Wednesday,0,cloudy
+2023-11-29,Tuna,fish,41,728.06,Wednesday,0,sunny
+2023-12-02,Tuna,fish,103,1764.03,Saturday,0,sunny
+2023-12-04,Potato,vegetable,84,1176.02,Monday,0,sunny
+2023-12-04,Potato,vegetable,86,802.53,Monday,0,cloudy
+2023-12-05,Seer Fish,fish,88,1718.38,Tuesday,1,sunny
+2023-12-05,Beans,vegetable,93,1394.1,Tuesday,0,rainy
+2023-12-05,Pork,meat,116,204.93,Tuesday,0,sunny
+2023-12-05,Beans,vegetable,52,1465.14,Tuesday,0,rainy
+2023-12-06,Tomato,vegetable,102,1560.1,Wednesday,0,cloudy
+2023-12-06,Beans,vegetable,77,849.44,Wednesday,0,cloudy
+2023-12-06,Seer Fish,fish,30,288.26,Wednesday,0,sunny
+2023-12-06,Seer Fish,fish,85,1810.62,Wednesday,1,sunny
+2023-12-06,Tomato,vegetable,75,390.7,Wednesday,0,sunny
+2023-12-10,Chicken,meat,16,491.82,Sunday,0,cloudy
+2023-12-10,Carrot,vegetable,73,1017.83,Sunday,0,cloudy
+2023-12-10,Chicken,meat,113,447.68,Sunday,0,rainy
+2023-12-11,Tuna,fish,58,1089.75,Monday,0,rainy
+2023-12-11,Tomato,vegetable,89,1503.53,Monday,0,sunny
+2023-12-11,Seer Fish,fish,61,1056.54,Monday,0,cloudy
+2023-12-16,Chicken,meat,86,866.1,Saturday,0,cloudy
+2023-12-17,Seer Fish,fish,71,1198.19,Sunday,0,rainy
+2023-12-18,Potato,vegetable,83,1611.69,Monday,0,rainy
+2023-12-19,Carrot,vegetable,49,432.08,Tuesday,0,cloudy
+2023-12-19,Tuna,fish,112,1585.43,Tuesday,0,rainy
+2023-12-20,Potato,vegetable,74,1626.78,Wednesday,0,sunny
+2023-12-20,Tomato,vegetable,23,435.38,Wednesday,0,cloudy
+2023-12-21,Tuna,fish,58,1911.78,Thursday,0,cloudy
+2023-12-22,Potato,vegetable,69,1519.74,Friday,0,rainy
+2023-12-22,Carrot,vegetable,189,607.33,Friday,1,rainy
+2023-12-24,Beans,vegetable,40,1509.28,Sunday,0,sunny
+2023-12-25,Carrot,vegetable,55,1941.85,Monday,0,rainy
+2023-12-26,Potato,vegetable,111,276.24,Tuesday,0,rainy
+2023-12-26,Tomato,vegetable,93,382.57,Tuesday,0,cloudy
+2023-12-27,Seer Fish,fish,57,758.73,Wednesday,0,sunny
+2023-12-27,Pork,meat,106,1345.91,Wednesday,0,cloudy
+2023-12-27,Beans,vegetable,136,1190.15,Wednesday,1,rainy
+2023-12-27,Beans,vegetable,69,1664.32,Wednesday,0,cloudy
+2024-01-02,Pork,meat,136,1427.72,Tuesday,0,rainy
+2024-01-05,Tomato,vegetable,15,1045.41,Friday,0,sunny
+2024-01-06,Potato,vegetable,76,1473.16,Saturday,0,cloudy
+2024-01-07,Carrot,vegetable,20,631.01,Sunday,0,cloudy
+2024-01-08,Tomato,vegetable,177,530.04,Monday,1,rainy
+2024-01-10,Tomato,vegetable,81,858.69,Wednesday,0,cloudy
+2024-01-10,Chicken,meat,106,1097.79,Wednesday,0,cloudy
+2024-01-11,Tuna,fish,64,1568.01,Thursday,0,sunny
+2024-01-12,Carrot,vegetable,65,1642.07,Friday,0,sunny
+2024-01-12,Pork,meat,104,1597.06,Friday,1,rainy
+2024-01-13,Potato,vegetable,97,1109.23,Saturday,0,sunny
+2024-01-13,Potato,vegetable,80,1196.25,Saturday,0,cloudy
+2024-01-13,Potato,vegetable,123,1646.59,Saturday,0,cloudy
+2024-01-16,Carrot,vegetable,70,1254.03,Tuesday,0,sunny
+2024-01-17,Beans,vegetable,83,1737.79,Wednesday,0,sunny
+2024-01-17,Potato,vegetable,74,1954.2,Wednesday,0,sunny
+2024-01-18,Carrot,vegetable,54,1545.17,Thursday,0,sunny
+2024-01-18,Tuna,fish,15,1196.34,Thursday,0,sunny
+2024-01-18,Seer Fish,fish,115,282.4,Thursday,0,sunny
+2024-01-18,Chicken,meat,104,1563.92,Thursday,0,sunny
+2024-01-19,Chicken,meat,116,1436.28,Friday,0,sunny
+2024-01-19,Potato,vegetable,34,1076.25,Friday,0,cloudy
+2024-01-20,Seer Fish,fish,27,1428.91,Saturday,0,cloudy
+2024-01-22,Seer Fish,fish,61,1008.32,Monday,0,cloudy
+2024-01-23,Tomato,vegetable,120,437.98,Tuesday,0,cloudy
+2024-01-24,Tuna,fish,69,1973.56,Wednesday,0,rainy
+2024-01-24,Beans,vegetable,68,580.99,Wednesday,0,rainy
+2024-01-24,Beans,vegetable,124,1300.45,Wednesday,0,cloudy
+2024-01-25,Potato,vegetable,82,1160.57,Thursday,0,rainy
+2024-01-25,Seer Fish,fish,124,846.16,Thursday,0,rainy
+2024-01-26,Beans,vegetable,87,535.85,Friday,0,rainy
+2024-01-26,Potato,vegetable,140,1152.41,Friday,1,sunny
+2024-01-29,Potato,vegetable,10,919.38,Monday,0,cloudy
+2024-01-30,Chicken,meat,16,1710.26,Tuesday,0,cloudy
+2024-01-31,Carrot,vegetable,115,1172.43,Wednesday,0,cloudy
+2024-01-31,Potato,vegetable,143,1518.65,Wednesday,1,rainy
+2024-02-01,Beans,vegetable,127,1107.4,Thursday,0,cloudy
+2024-02-02,Beans,vegetable,59,1883.37,Friday,1,sunny
+2024-02-03,Beans,vegetable,87,849.26,Saturday,0,rainy
+2024-02-05,Tuna,fish,38,527.75,Monday,0,cloudy
+2024-02-06,Seer Fish,fish,136,1177.75,Tuesday,0,rainy
+2024-02-07,Pork,meat,53,1022.68,Wednesday,0,cloudy
+2024-02-07,Potato,vegetable,40,476.46,Wednesday,0,rainy
+2024-02-12,Pork,meat,112,1550.3,Monday,0,cloudy
+2024-02-12,Carrot,vegetable,86,1331.43,Monday,0,rainy
+2024-02-12,Seer Fish,fish,58,1733.18,Monday,0,cloudy
+2024-02-13,Tomato,vegetable,113,1513.3,Tuesday,0,rainy
+2024-02-15,Beans,vegetable,122,1435.31,Thursday,1,sunny
+2024-02-16,Tomato,vegetable,31,1434.98,Friday,0,rainy
+2024-02-16,Beans,vegetable,66,1383.56,Friday,0,cloudy
+2024-02-19,Pork,meat,124,1831.35,Monday,0,cloudy
+2024-02-19,Chicken,meat,42,535.5,Monday,0,rainy
+2024-02-19,Seer Fish,fish,80,342.4,Monday,0,rainy
+2024-02-20,Tomato,vegetable,11,878.91,Tuesday,0,cloudy
+2024-02-20,Pork,meat,127,1131.94,Tuesday,0,sunny
+2024-02-21,Chicken,meat,112,1866.37,Wednesday,0,sunny
+2024-02-22,Seer Fish,fish,69,604.46,Thursday,0,sunny
+2024-02-23,Potato,vegetable,43,948.13,Friday,0,rainy
+2024-02-24,Seer Fish,fish,129,657.72,Saturday,0,sunny
+2024-02-24,Carrot,vegetable,16,1389.08,Saturday,0,sunny
+2024-02-25,Tuna,fish,30,638.61,Sunday,0,cloudy
+2024-02-25,Beans,vegetable,181,1772.49,Sunday,1,rainy
+2024-02-25,Tomato,vegetable,104,1682.01,Sunday,0,rainy
+2024-02-26,Tuna,fish,46,230.11,Monday,0,cloudy
+2024-02-26,Potato,vegetable,27,1747.93,Monday,0,sunny
+2024-02-26,Seer Fish,fish,35,831.96,Monday,0,cloudy
+2024-02-28,Tuna,fish,37,800.83,Wednesday,0,cloudy
+2024-02-29,Tuna,fish,41,913.62,Thursday,0,rainy
+2024-02-29,Carrot,vegetable,78,588.02,Thursday,0,rainy
+2024-03-01,Potato,vegetable,107,1563.23,Friday,0,sunny
+2024-03-01,Seer Fish,fish,83,408.92,Friday,1,sunny
+2024-03-01,Seer Fish,fish,68,1579.31,Friday,0,cloudy
+2024-03-01,Tomato,vegetable,94,365.5,Friday,0,sunny
+2024-03-02,Potato,vegetable,88,1644.08,Saturday,0,sunny
+2024-03-02,Carrot,vegetable,90,1634.16,Saturday,0,cloudy
+2024-03-02,Seer Fish,fish,118,1765.62,Saturday,0,cloudy
+2024-03-04,Chicken,meat,121,1670.4,Monday,0,sunny
+2024-03-05,Carrot,vegetable,76,757.13,Tuesday,0,rainy
+2024-03-05,Pork,meat,107,1008.58,Tuesday,0,sunny
+2024-03-06,Carrot,vegetable,80,1614.31,Wednesday,0,rainy
+2024-03-06,Tomato,vegetable,12,1828.71,Wednesday,0,cloudy
+2024-03-08,Chicken,meat,103,1059.86,Friday,0,sunny
+2024-03-08,Tuna,fish,16,1140.91,Friday,0,sunny
+2024-03-09,Potato,vegetable,75,1891.38,Saturday,0,rainy
+2024-03-10,Tomato,vegetable,47,1682.05,Sunday,0,rainy
+2024-03-12,Carrot,vegetable,56,670.35,Tuesday,0,cloudy
+2024-03-12,Seer Fish,fish,11,371.0,Tuesday,0,sunny
+2024-03-13,Beans,vegetable,55,667.39,Wednesday,0,cloudy
+2024-03-13,Seer Fish,fish,120,727.1,Wednesday,0,cloudy
+2024-03-16,Beans,vegetable,75,1036.98,Saturday,0,sunny
+2024-03-16,Beans,vegetable,58,1295.14,Saturday,0,sunny
+2024-03-18,Tomato,vegetable,29,552.91,Monday,0,cloudy
+2024-03-19,Beans,vegetable,10,230.4,Tuesday,0,cloudy
+2024-03-20,Tomato,vegetable,58,926.11,Wednesday,1,rainy
+2024-03-21,Seer Fish,fish,121,1544.4,Thursday,0,rainy
+2024-03-22,Potato,vegetable,72,1944.3,Friday,0,rainy
+2024-03-23,Potato,vegetable,98,1368.52,Saturday,0,cloudy
+2024-03-24,Tuna,fish,57,619.06,Sunday,0,rainy
+2024-03-24,Potato,vegetable,24,774.04,Sunday,0,cloudy
+2024-03-24,Carrot,vegetable,121,1696.31,Sunday,0,rainy
+2024-03-25,Seer Fish,fish,85,1596.14,Monday,0,cloudy
+2024-03-26,Tomato,vegetable,73,810.27,Tuesday,0,cloudy
+2024-03-27,Tuna,fish,126,1243.23,Wednesday,0,sunny
+2024-03-27,Seer Fish,fish,11,690.78,Wednesday,0,sunny
+2024-03-28,Carrot,vegetable,44,1545.21,Thursday,0,cloudy
+2024-03-28,Seer Fish,fish,45,1282.19,Thursday,0,cloudy
+2024-03-30,Carrot,vegetable,78,1554.3,Saturday,0,sunny
+2024-04-03,Seer Fish,fish,73,1741.86,Wednesday,0,sunny
+2024-04-05,Beans,vegetable,111,353.55,Friday,0,cloudy
+2024-04-05,Potato,vegetable,91,1424.2,Friday,0,cloudy
+2024-04-06,Potato,vegetable,80,610.65,Saturday,0,rainy
+2024-04-06,Pork,meat,58,1550.86,Saturday,0,cloudy
+2024-04-07,Carrot,vegetable,57,589.05,Sunday,0,sunny
+2024-04-07,Seer Fish,fish,85,646.23,Sunday,0,sunny
+2024-04-09,Seer Fish,fish,126,1437.29,Tuesday,1,cloudy
+2024-04-09,Tuna,fish,89,1916.87,Tuesday,0,rainy
+2024-04-09,Beans,vegetable,63,1406.88,Tuesday,0,cloudy
+2024-04-09,Potato,vegetable,95,254.48,Tuesday,0,rainy
+2024-04-11,Tomato,vegetable,99,1795.05,Thursday,0,cloudy
+2024-04-13,Seer Fish,fish,11,1456.84,Saturday,0,cloudy
+2024-04-13,Tuna,fish,123,728.2,Saturday,0,sunny
+2024-04-14,Beans,vegetable,60,1730.19,Sunday,0,rainy
+2024-04-15,Seer Fish,fish,47,1951.61,Monday,0,cloudy
+2024-04-17,Chicken,meat,98,960.43,Wednesday,0,sunny
+2024-04-17,Tuna,fish,60,502.38,Wednesday,0,cloudy
+2024-04-18,Pork,meat,22,1774.07,Thursday,0,cloudy
+2024-04-20,Beans,vegetable,114,1910.07,Saturday,0,cloudy
+2024-04-20,Tuna,fish,92,1203.33,Saturday,1,sunny
+2024-04-21,Seer Fish,fish,63,1527.44,Sunday,0,cloudy
+2024-04-21,Potato,vegetable,43,617.05,Sunday,0,cloudy
+2024-04-21,Carrot,vegetable,151,1419.7,Sunday,0,rainy
+2024-04-22,Chicken,meat,60,271.89,Monday,1,cloudy
+2024-04-26,Carrot,vegetable,45,1166.04,Friday,0,rainy
+2024-04-27,Tuna,fish,183,1315.18,Saturday,1,rainy
+2024-04-29,Tuna,fish,76,517.89,Monday,0,cloudy
+2024-04-29,Tomato,vegetable,29,894.94,Monday,0,cloudy
+2024-04-29,Chicken,meat,91,1385.93,Monday,0,cloudy
+2024-04-30,Chicken,meat,138,1160.24,Tuesday,0,rainy
+2024-04-30,Beans,vegetable,117,819.65,Tuesday,0,rainy
+2024-04-30,Tuna,fish,68,1362.17,Tuesday,0,cloudy
+2024-05-01,Tuna,fish,125,406.5,Wednesday,0,sunny
+2024-05-01,Potato,vegetable,45,666.54,Wednesday,0,cloudy
+2024-05-02,Potato,vegetable,70,1370.97,Thursday,0,rainy
+2024-05-03,Beans,vegetable,64,1884.49,Friday,0,rainy
+2024-05-07,Carrot,vegetable,37,557.7,Tuesday,0,cloudy
+2024-05-08,Chicken,meat,124,1823.57,Wednesday,0,sunny
+2024-05-08,Beans,vegetable,121,1317.2,Wednesday,0,cloudy
+2024-05-08,Carrot,vegetable,69,1543.81,Wednesday,0,sunny
+2024-05-08,Chicken,meat,111,594.85,Wednesday,0,sunny
+2024-05-09,Chicken,meat,157,542.38,Thursday,1,cloudy
+2024-05-09,Chicken,meat,23,1445.27,Thursday,0,sunny
+2024-05-09,Pork,meat,80,1648.44,Thursday,0,rainy
+2024-05-11,Beans,vegetable,18,1677.83,Saturday,0,sunny
+2024-05-12,Potato,vegetable,84,791.02,Sunday,0,cloudy
+2024-05-12,Potato,vegetable,31,584.75,Sunday,0,sunny
+2024-05-13,Chicken,meat,33,1198.84,Monday,0,sunny
+2024-05-13,Seer Fish,fish,133,516.39,Monday,0,rainy
+2024-05-14,Potato,vegetable,99,1801.34,Tuesday,0,rainy
+2024-05-14,Pork,meat,106,770.13,Tuesday,0,cloudy
+2024-05-16,Carrot,vegetable,109,1054.81,Thursday,0,rainy
+2024-05-16,Beans,vegetable,29,1550.21,Thursday,0,rainy
+2024-05-17,Pork,meat,69,786.6,Friday,0,rainy
+2024-05-19,Carrot,vegetable,39,516.0,Sunday,0,sunny
+2024-05-19,Seer Fish,fish,59,374.95,Sunday,0,sunny
+2024-05-21,Potato,vegetable,46,219.28,Tuesday,0,cloudy
+2024-05-22,Seer Fish,fish,115,1230.89,Wednesday,0,cloudy
+2024-05-22,Tuna,fish,168,427.24,Wednesday,1,rainy
+2024-05-23,Tuna,fish,52,888.91,Thursday,0,rainy
+2024-05-24,Potato,vegetable,173,377.49,Friday,1,rainy
+2024-05-25,Tuna,fish,145,1154.66,Saturday,0,rainy
+2024-05-26,Tuna,fish,28,1337.52,Sunday,0,cloudy
+2024-05-27,Seer Fish,fish,79,523.59,Monday,0,cloudy
+2024-05-29,Chicken,meat,18,302.38,Wednesday,0,sunny
+2024-05-29,Beans,vegetable,103,899.09,Wednesday,0,rainy
+2024-05-29,Chicken,meat,31,416.51,Wednesday,0,sunny
+2024-05-29,Chicken,meat,94,1265.26,Wednesday,0,sunny
+2024-05-30,Carrot,vegetable,42,811.94,Thursday,0,cloudy
+2024-05-31,Tomato,vegetable,105,1695.02,Friday,0,sunny
+2024-05-31,Seer Fish,fish,42,599.75,Friday,0,rainy
+2024-05-31,Tomato,vegetable,70,1687.73,Friday,0,sunny
+2024-06-03,Tuna,fish,59,902.82,Monday,0,cloudy
+2024-06-03,Seer Fish,fish,74,1766.93,Monday,0,cloudy
+2024-06-03,Tomato,vegetable,124,1032.88,Monday,0,cloudy
+2024-06-04,Pork,meat,67,1378.27,Tuesday,0,rainy
+2024-06-05,Potato,vegetable,29,363.64,Wednesday,0,sunny
+2024-06-07,Chicken,meat,126,881.62,Friday,0,sunny
+2024-06-07,Seer Fish,fish,38,893.35,Friday,0,rainy
+2024-06-07,Tomato,vegetable,79,952.83,Friday,0,rainy
+2024-06-08,Tomato,vegetable,21,385.93,Saturday,0,cloudy
+2024-06-09,Tuna,fish,46,1756.33,Sunday,1,cloudy
+2024-06-11,Beans,vegetable,27,356.13,Tuesday,0,sunny
+2024-06-13,Pork,meat,98,354.1,Thursday,0,rainy
+2024-06-13,Chicken,meat,102,1034.44,Thursday,0,sunny
+2024-06-15,Seer Fish,fish,50,382.21,Saturday,0,rainy
+2024-06-15,Pork,meat,85,1002.4,Saturday,0,cloudy
+2024-06-16,Potato,vegetable,89,1850.89,Sunday,0,cloudy
+2024-06-17,Carrot,vegetable,78,1216.9,Monday,0,cloudy
+2024-06-17,Potato,vegetable,101,1328.15,Monday,0,sunny
+2024-06-18,Seer Fish,fish,157,207.4,Tuesday,1,cloudy
+2024-06-19,Tomato,vegetable,64,1010.93,Wednesday,0,cloudy
+2024-06-20,Chicken,meat,135,633.74,Thursday,0,rainy
+2024-06-20,Chicken,meat,142,974.12,Thursday,1,sunny
+2024-06-20,Carrot,vegetable,113,1836.06,Thursday,0,sunny
+2024-06-20,Tuna,fish,91,774.77,Thursday,0,rainy
+2024-06-20,Seer Fish,fish,58,912.38,Thursday,0,rainy
+2024-06-20,Tuna,fish,16,1710.32,Thursday,0,cloudy
+2024-06-21,Carrot,vegetable,60,1964.92,Friday,0,rainy
+2024-06-22,Seer Fish,fish,103,1542.2,Saturday,0,rainy
+2024-06-22,Pork,meat,30,1922.58,Saturday,0,cloudy
+2024-06-22,Pork,meat,58,1335.36,Saturday,0,sunny
+2024-06-22,Tomato,vegetable,53,764.75,Saturday,0,cloudy
+2024-06-22,Pork,meat,142,1226.05,Saturday,1,cloudy
+2024-06-24,Tomato,vegetable,36,400.14,Monday,0,rainy
+2024-06-26,Tomato,vegetable,82,613.08,Wednesday,0,rainy
+2024-06-27,Tuna,fish,128,1278.1,Thursday,0,sunny
+2024-06-27,Tomato,vegetable,32,1218.67,Thursday,0,sunny
+2024-06-28,Seer Fish,fish,91,535.55,Friday,0,rainy
+2024-06-29,Carrot,vegetable,47,1274.34,Saturday,0,cloudy
+2024-06-30,Beans,vegetable,119,1613.6,Sunday,0,cloudy
+2024-06-30,Tuna,fish,13,1832.47,Sunday,0,cloudy
+2024-07-01,Tuna,fish,129,1843.81,Monday,0,sunny
+2024-07-01,Tomato,vegetable,126,1178.56,Monday,0,rainy
+2024-07-03,Beans,vegetable,17,1032.45,Wednesday,0,cloudy
+2024-07-04,Carrot,vegetable,115,1449.55,Thursday,1,cloudy
+2024-07-05,Pork,meat,35,1078.81,Friday,0,rainy
+2024-07-05,Pork,meat,103,673.82,Friday,0,sunny
+2024-07-06,Tuna,fish,26,1391.47,Saturday,0,cloudy
+2024-07-06,Potato,vegetable,66,1377.03,Saturday,0,rainy
+2024-07-06,Beans,vegetable,91,1155.53,Saturday,1,sunny
+2024-07-07,Potato,vegetable,16,291.31,Sunday,0,cloudy
+2024-07-08,Pork,meat,125,1752.66,Monday,0,cloudy
+2024-07-08,Beans,vegetable,58,1017.34,Monday,0,cloudy
+2024-07-09,Tuna,fish,71,1546.36,Tuesday,0,cloudy
+2024-07-10,Tuna,fish,36,522.84,Wednesday,0,sunny
+2024-07-12,Tuna,fish,65,1702.27,Friday,0,sunny
+2024-07-13,Beans,vegetable,92,1416.56,Saturday,0,cloudy
+2024-07-13,Pork,meat,76,471.02,Saturday,1,sunny
+2024-07-13,Potato,vegetable,17,531.29,Saturday,0,cloudy
+2024-07-15,Beans,vegetable,94,885.63,Monday,0,rainy
+2024-07-16,Seer Fish,fish,35,723.17,Tuesday,0,sunny
+2024-07-17,Carrot,vegetable,21,848.02,Wednesday,0,rainy
+2024-07-17,Carrot,vegetable,25,1685.56,Wednesday,0,cloudy
+2024-07-17,Tuna,fish,36,1915.41,Wednesday,0,cloudy
+2024-07-18,Pork,meat,77,974.13,Thursday,0,rainy
+2024-07-19,Potato,vegetable,61,521.7,Friday,0,rainy
+2024-07-19,Tomato,vegetable,99,1019.62,Friday,0,sunny
+2024-07-20,Potato,vegetable,110,214.34,Saturday,0,cloudy
+2024-07-20,Carrot,vegetable,33,1455.35,Saturday,0,rainy
+2024-07-21,Pork,meat,90,1259.19,Sunday,0,cloudy
+2024-07-21,Chicken,meat,132,323.98,Sunday,0,rainy
+2024-07-22,Carrot,vegetable,108,606.05,Monday,0,rainy
+2024-07-23,Pork,meat,25,370.51,Tuesday,0,sunny
+2024-07-23,Tuna,fish,108,1255.64,Tuesday,0,rainy
+2024-07-25,Carrot,vegetable,153,604.76,Thursday,1,rainy
+2024-07-26,Pork,meat,45,1229.53,Friday,0,rainy
+2024-07-26,Pork,meat,58,1062.91,Friday,0,rainy
+2024-07-26,Chicken,meat,21,1904.46,Friday,0,cloudy
+2024-07-28,Tuna,fish,149,401.37,Sunday,1,cloudy
+2024-07-29,Seer Fish,fish,66,671.2,Monday,0,rainy
+2024-07-29,Carrot,vegetable,40,447.09,Monday,0,cloudy
+2024-07-29,Pork,meat,75,1536.34,Monday,0,sunny
+2024-07-29,Tomato,vegetable,59,1942.02,Monday,0,sunny
+2024-07-29,Chicken,meat,140,1939.33,Monday,0,rainy
+2024-07-31,Pork,meat,108,1266.01,Wednesday,0,cloudy
+2024-07-31,Pork,meat,60,1037.06,Wednesday,0,rainy
+2024-08-01,Tuna,fish,45,1632.59,Thursday,0,sunny
+2024-08-01,Pork,meat,85,323.5,Thursday,0,sunny
+2024-08-01,Chicken,meat,25,771.49,Thursday,0,cloudy
+2024-08-03,Chicken,meat,124,861.84,Saturday,0,sunny
+2024-08-04,Tuna,fish,37,917.12,Sunday,0,sunny
+2024-08-04,Pork,meat,138,515.89,Sunday,0,rainy
+2024-08-05,Tuna,fish,153,1697.68,Monday,0,rainy
+2024-08-05,Tomato,vegetable,120,857.74,Monday,0,rainy
+2024-08-06,Pork,meat,63,1242.05,Tuesday,0,sunny
+2024-08-07,Potato,vegetable,47,637.4,Wednesday,0,rainy
+2024-08-08,Potato,vegetable,89,267.44,Thursday,0,sunny
+2024-08-09,Pork,meat,14,1057.27,Friday,0,cloudy
+2024-08-10,Potato,vegetable,19,468.46,Saturday,0,cloudy
+2024-08-10,Chicken,meat,45,1153.03,Saturday,0,cloudy
+2024-08-10,Tomato,vegetable,61,1477.1,Saturday,0,sunny
+2024-08-10,Carrot,vegetable,73,529.01,Saturday,0,sunny
+2024-08-10,Carrot,vegetable,16,1044.91,Saturday,0,sunny
+2024-08-10,Seer Fish,fish,119,611.13,Saturday,0,sunny
+2024-08-11,Carrot,vegetable,60,1986.85,Sunday,0,cloudy
+2024-08-11,Pork,meat,112,1839.78,Sunday,0,rainy
+2024-08-12,Beans,vegetable,59,1239.45,Monday,0,rainy
+2024-08-12,Tomato,vegetable,161,1058.56,Monday,1,rainy
+2024-08-12,Tuna,fish,94,1999.23,Monday,0,rainy
+2024-08-13,Chicken,meat,122,1962.87,Tuesday,0,rainy
+2024-08-13,Pork,meat,102,1960.21,Tuesday,0,rainy
+2024-08-13,Tomato,vegetable,77,341.26,Tuesday,0,rainy
+2024-08-13,Seer Fish,fish,113,1271.42,Tuesday,0,cloudy
+2024-08-14,Beans,vegetable,119,1593.55,Wednesday,0,sunny
+2024-08-16,Potato,vegetable,91,1426.04,Friday,0,cloudy
+2024-08-17,Potato,vegetable,93,1912.77,Saturday,0,cloudy
+2024-08-19,Chicken,meat,102,1321.78,Monday,0,sunny
+2024-08-19,Tomato,vegetable,46,1413.64,Monday,0,cloudy
+2024-08-19,Seer Fish,fish,110,1864.87,Monday,0,sunny
+2024-08-21,Tomato,vegetable,27,1816.08,Wednesday,0,sunny
+2024-08-21,Pork,meat,40,1953.16,Wednesday,0,cloudy
+2024-08-21,Seer Fish,fish,150,213.23,Wednesday,1,rainy
+2024-08-21,Seer Fish,fish,73,479.74,Wednesday,0,rainy
+2024-08-24,Tomato,vegetable,85,402.53,Saturday,0,cloudy
+2024-08-24,Carrot,vegetable,87,1350.09,Saturday,0,rainy
+2024-08-24,Potato,vegetable,26,945.18,Saturday,0,sunny
+2024-08-24,Chicken,meat,126,1582.01,Saturday,0,cloudy
+2024-08-24,Chicken,meat,111,1793.74,Saturday,0,rainy
+2024-08-24,Chicken,meat,140,1554.06,Saturday,0,rainy
+2024-08-27,Pork,meat,128,1788.59,Tuesday,0,rainy
+2024-08-29,Beans,vegetable,13,1651.18,Thursday,0,cloudy
+2024-08-31,Potato,vegetable,31,1468.11,Saturday,0,cloudy
+2024-08-31,Tuna,fish,122,1137.17,Saturday,0,sunny
+2024-08-31,Seer Fish,fish,55,396.86,Saturday,0,cloudy
+2024-09-01,Seer Fish,fish,130,1415.38,Sunday,0,sunny
+2024-09-02,Potato,vegetable,101,1309.37,Monday,0,sunny
+2024-09-02,Beans,vegetable,53,980.6,Monday,0,sunny
+2024-09-03,Potato,vegetable,65,1335.89,Tuesday,0,cloudy
+2024-09-03,Beans,vegetable,71,1754.69,Tuesday,0,rainy
+2024-09-03,Tomato,vegetable,108,477.65,Tuesday,0,cloudy
+2024-09-04,Tuna,fish,66,640.52,Wednesday,0,rainy
+2024-09-05,Tuna,fish,108,213.84,Thursday,0,sunny
+2024-09-08,Chicken,meat,51,1181.85,Sunday,0,sunny
+2024-09-08,Tuna,fish,49,1341.0,Sunday,0,sunny
+2024-09-08,Pork,meat,156,235.87,Sunday,0,rainy
+2024-09-09,Tuna,fish,21,587.04,Monday,0,sunny
+2024-09-09,Chicken,meat,127,800.05,Monday,0,sunny
+2024-09-10,Carrot,vegetable,117,246.56,Tuesday,0,cloudy
+2024-09-11,Potato,vegetable,88,1102.46,Wednesday,1,rainy
+2024-09-11,Chicken,meat,122,1422.31,Wednesday,1,rainy
+2024-09-11,Potato,vegetable,97,1481.63,Wednesday,0,rainy
+2024-09-11,Tomato,vegetable,44,1944.06,Wednesday,0,cloudy
+2024-09-11,Tomato,vegetable,93,378.52,Wednesday,0,cloudy
+2024-09-12,Potato,vegetable,132,1699.11,Thursday,1,sunny
+2024-09-13,Pork,meat,110,1546.12,Friday,0,sunny
+2024-09-13,Tomato,vegetable,34,482.79,Friday,0,sunny
+2024-09-13,Chicken,meat,120,762.65,Friday,0,cloudy
+2024-09-13,Tomato,vegetable,124,1935.85,Friday,1,cloudy
+2024-09-13,Seer Fish,fish,51,1600.03,Friday,0,rainy
+2024-09-13,Seer Fish,fish,116,706.73,Friday,1,rainy
+2024-09-14,Tomato,vegetable,83,1496.36,Saturday,0,cloudy
+2024-09-15,Pork,meat,109,475.11,Sunday,0,cloudy
+2024-09-15,Tomato,vegetable,115,269.81,Sunday,0,rainy
+2024-09-15,Pork,meat,80,1477.61,Sunday,0,sunny
+2024-09-15,Carrot,vegetable,53,737.26,Sunday,0,sunny
+2024-09-16,Pork,meat,45,1475.46,Monday,1,sunny
+2024-09-16,Chicken,meat,126,855.02,Monday,1,rainy
+2024-09-17,Tomato,vegetable,104,1256.61,Tuesday,0,rainy
+2024-09-18,Tuna,fish,77,396.74,Wednesday,0,cloudy
+2024-09-18,Carrot,vegetable,62,1985.24,Wednesday,0,sunny
+2024-09-20,Carrot,vegetable,91,1480.89,Friday,0,sunny
+2024-09-20,Beans,vegetable,58,601.83,Friday,0,sunny
+2024-09-21,Chicken,meat,10,1413.24,Saturday,0,cloudy
+2024-09-21,Tuna,fish,21,1779.95,Saturday,0,sunny
+2024-09-23,Carrot,vegetable,35,1152.24,Monday,0,rainy
+2024-09-23,Pork,meat,71,1365.1,Monday,0,cloudy
+2024-09-23,Carrot,vegetable,78,1268.7,Monday,0,cloudy
+2024-09-24,Seer Fish,fish,64,708.87,Tuesday,0,rainy
+2024-09-26,Pork,meat,54,288.05,Thursday,0,cloudy
+2024-09-26,Tomato,vegetable,83,466.0,Thursday,0,sunny
+2024-09-26,Beans,vegetable,125,368.1,Thursday,1,sunny
+2024-09-28,Tuna,fish,44,1296.19,Saturday,0,cloudy
+2024-09-29,Seer Fish,fish,58,571.84,Sunday,0,rainy
+2024-09-29,Chicken,meat,102,953.89,Sunday,0,cloudy
+2024-09-29,Chicken,meat,110,1451.13,Sunday,0,rainy
+2024-09-30,Chicken,meat,76,992.83,Monday,1,sunny
+2024-10-01,Chicken,meat,113,1498.13,Tuesday,0,rainy
+2024-10-01,Beans,vegetable,20,1716.55,Tuesday,0,sunny
+2024-10-01,Beans,vegetable,66,1755.64,Tuesday,0,sunny
+2024-10-02,Potato,vegetable,26,1567.98,Wednesday,0,cloudy
+2024-10-02,Potato,vegetable,27,1268.85,Wednesday,0,sunny
+2024-10-02,Carrot,vegetable,39,1082.99,Wednesday,0,rainy
+2024-10-02,Carrot,vegetable,105,1506.78,Wednesday,0,rainy
+2024-10-02,Pork,meat,113,1129.9,Wednesday,0,cloudy
+2024-10-04,Chicken,meat,59,1625.74,Friday,0,sunny
+2024-10-05,Beans,vegetable,94,1239.23,Saturday,0,sunny
+2024-10-06,Tuna,fish,37,473.11,Sunday,0,rainy
+2024-10-08,Carrot,vegetable,52,1995.37,Tuesday,0,rainy
+2024-10-09,Carrot,vegetable,91,1330.06,Wednesday,0,sunny
+2024-10-10,Tuna,fish,87,365.16,Thursday,0,rainy
+2024-10-11,Tomato,vegetable,122,1692.83,Friday,0,rainy
+2024-10-11,Tuna,fish,83,208.48,Friday,0,sunny
+2024-10-11,Carrot,vegetable,21,1109.74,Friday,0,sunny
+2024-10-12,Chicken,meat,76,1161.45,Saturday,0,rainy
+2024-10-14,Carrot,vegetable,33,473.52,Monday,0,sunny
+2024-10-14,Carrot,vegetable,64,490.85,Monday,0,cloudy
+2024-10-15,Potato,vegetable,80,1386.71,Tuesday,0,cloudy
+2024-10-15,Potato,vegetable,48,1831.75,Tuesday,0,cloudy
+2024-10-16,Seer Fish,fish,27,245.02,Wednesday,0,sunny
+2024-10-16,Seer Fish,fish,19,1886.04,Wednesday,0,cloudy
+2024-10-17,Pork,meat,39,1432.31,Thursday,0,sunny
+2024-10-18,Beans,vegetable,15,398.84,Friday,0,sunny
+2024-10-18,Tomato,vegetable,143,874.03,Friday,0,rainy
+2024-10-18,Seer Fish,fish,118,1560.73,Friday,0,cloudy
+2024-10-19,Potato,vegetable,45,1029.49,Saturday,0,rainy
+2024-10-19,Pork,meat,71,1926.01,Saturday,0,rainy
+2024-10-23,Tuna,fish,39,1834.29,Wednesday,0,cloudy
+2024-10-25,Beans,vegetable,46,222.77,Friday,0,rainy
+2024-10-25,Seer Fish,fish,48,1343.73,Friday,0,cloudy
+2024-10-25,Carrot,vegetable,130,1493.48,Friday,0,rainy
+2024-10-26,Tomato,vegetable,48,410.02,Saturday,0,sunny
+2024-10-26,Beans,vegetable,144,385.81,Saturday,1,cloudy
+2024-10-27,Carrot,vegetable,82,486.16,Sunday,1,rainy
+2024-10-27,Seer Fish,fish,17,758.31,Sunday,0,sunny
+2024-10-28,Carrot,vegetable,130,1308.64,Monday,1,rainy
+2024-10-29,Carrot,vegetable,125,539.05,Tuesday,0,sunny
+2024-10-31,Tuna,fish,80,384.76,Thursday,0,cloudy
+2024-10-31,Beans,vegetable,69,1446.98,Thursday,0,sunny
+2024-10-31,Beans,vegetable,118,413.54,Thursday,1,rainy
+2024-11-01,Pork,meat,37,1437.98,Friday,0,rainy
+2024-11-02,Seer Fish,fish,97,518.86,Saturday,0,rainy
+2024-11-02,Potato,vegetable,83,1995.44,Saturday,0,rainy
+2024-11-02,Chicken,meat,101,1462.57,Saturday,0,sunny
+2024-11-02,Beans,vegetable,145,691.79,Saturday,0,rainy
+2024-11-03,Beans,vegetable,38,1488.64,Sunday,0,cloudy
+2024-11-03,Potato,vegetable,57,603.64,Sunday,0,cloudy
+2024-11-04,Beans,vegetable,50,1882.47,Monday,0,cloudy
+2024-11-05,Carrot,vegetable,124,240.46,Tuesday,0,cloudy
+2024-11-05,Carrot,vegetable,118,1024.48,Tuesday,1,sunny
+2024-11-06,Potato,vegetable,74,1757.47,Wednesday,0,rainy
+2024-11-06,Chicken,meat,44,1330.85,Wednesday,1,cloudy
+2024-11-06,Seer Fish,fish,30,1546.07,Wednesday,0,cloudy
+2024-11-07,Tuna,fish,85,437.25,Thursday,0,sunny
+2024-11-07,Carrot,vegetable,57,364.05,Thursday,0,sunny
+2024-11-07,Carrot,vegetable,55,751.69,Thursday,0,rainy
+2024-11-08,Potato,vegetable,91,559.41,Friday,0,sunny
+2024-11-08,Carrot,vegetable,70,1905.06,Friday,0,cloudy
+2024-11-12,Pork,meat,149,1051.09,Tuesday,0,rainy
+2024-11-13,Tomato,vegetable,26,787.13,Wednesday,0,cloudy
+2024-11-15,Beans,vegetable,65,329.74,Friday,0,sunny
+2024-11-16,Pork,meat,58,680.25,Saturday,0,sunny
+2024-11-17,Seer Fish,fish,33,1362.84,Sunday,0,rainy
+2024-11-17,Carrot,vegetable,87,1463.28,Sunday,0,sunny
+2024-11-17,Potato,vegetable,59,1149.89,Sunday,0,cloudy
+2024-11-17,Seer Fish,fish,96,1952.63,Sunday,0,rainy
+2024-11-17,Seer Fish,fish,73,1743.92,Sunday,0,cloudy
+2024-11-17,Tuna,fish,46,559.82,Sunday,0,sunny
+2024-11-18,Tuna,fish,109,1732.5,Monday,1,cloudy
+2024-11-18,Tomato,vegetable,76,1614.45,Monday,0,rainy
+2024-11-19,Carrot,vegetable,83,1299.96,Tuesday,0,cloudy
+2024-11-19,Carrot,vegetable,40,1252.21,Tuesday,0,rainy
+2024-11-20,Carrot,vegetable,27,1853.63,Wednesday,0,cloudy
+2024-11-20,Seer Fish,fish,41,309.1,Wednesday,0,sunny
+2024-11-21,Tomato,vegetable,43,1941.09,Thursday,0,rainy
+2024-11-22,Potato,vegetable,116,1062.24,Friday,0,cloudy
+2024-11-25,Tomato,vegetable,99,1139.68,Monday,0,sunny
+2024-11-25,Potato,vegetable,100,1031.02,Monday,0,rainy
+2024-11-26,Tuna,fish,52,1620.61,Tuesday,0,sunny
+2024-11-27,Tomato,vegetable,101,354.25,Wednesday,0,sunny
+2024-11-28,Tomato,vegetable,27,1153.71,Thursday,0,sunny
+2024-11-30,Carrot,vegetable,63,463.57,Saturday,0,rainy
+2024-11-30,Potato,vegetable,74,1578.32,Saturday,0,rainy
+2024-12-02,Beans,vegetable,42,1938.5,Monday,0,cloudy
+2024-12-02,Tomato,vegetable,122,1704.2,Monday,0,cloudy
+2024-12-03,Beans,vegetable,39,1860.23,Tuesday,0,sunny
+2024-12-04,Pork,meat,47,492.78,Wednesday,0,sunny
+2024-12-05,Beans,vegetable,72,1760.19,Thursday,0,rainy
+2024-12-05,Seer Fish,fish,84,979.13,Thursday,0,rainy
+2024-12-06,Tuna,fish,56,484.54,Friday,0,rainy
+2024-12-06,Beans,vegetable,60,1749.89,Friday,0,rainy
+2024-12-07,Potato,vegetable,45,770.67,Saturday,0,cloudy
+2024-12-08,Potato,vegetable,21,1362.63,Sunday,0,sunny
+2024-12-08,Potato,vegetable,41,1439.13,Sunday,0,sunny
+2024-12-08,Pork,meat,132,938.68,Sunday,0,rainy
+2024-12-08,Chicken,meat,47,820.94,Sunday,0,sunny
+2024-12-09,Potato,vegetable,156,687.97,Monday,1,cloudy
+2024-12-10,Carrot,vegetable,45,1298.14,Tuesday,0,sunny
+2024-12-10,Pork,meat,126,692.47,Tuesday,1,rainy
+2024-12-11,Carrot,vegetable,78,712.42,Wednesday,0,rainy
+2024-12-13,Pork,meat,128,913.94,Friday,0,rainy
+2024-12-13,Potato,vegetable,101,1337.12,Friday,0,sunny
+2024-12-13,Carrot,vegetable,82,1447.28,Friday,0,rainy
+2024-12-14,Potato,vegetable,84,478.63,Saturday,0,sunny
+2024-12-14,Tuna,fish,134,489.33,Saturday,1,sunny
+2024-12-14,Seer Fish,fish,126,965.88,Saturday,0,sunny
+2024-12-18,Seer Fish,fish,52,543.41,Wednesday,0,rainy
+2024-12-19,Beans,vegetable,63,1481.37,Thursday,1,cloudy
+2024-12-20,Chicken,meat,110,348.84,Friday,0,cloudy
+2024-12-20,Tomato,vegetable,80,1789.08,Friday,0,sunny
+2024-12-21,Seer Fish,fish,15,998.62,Saturday,0,sunny
+2024-12-21,Seer Fish,fish,85,201.96,Saturday,0,sunny
+2024-12-21,Beans,vegetable,34,1905.61,Saturday,0,cloudy
+2024-12-22,Carrot,vegetable,108,1233.35,Sunday,0,rainy
+2024-12-22,Tomato,vegetable,42,1254.83,Sunday,0,rainy
+2024-12-23,Chicken,meat,71,1133.63,Monday,0,cloudy
+2024-12-23,Potato,vegetable,12,1007.48,Monday,0,sunny
+2024-12-26,Beans,vegetable,98,1003.93,Thursday,0,sunny
+2024-12-26,Seer Fish,fish,128,757.25,Thursday,0,rainy
+2024-12-27,Tuna,fish,57,688.7,Friday,0,sunny
+2024-12-27,Seer Fish,fish,133,1189.99,Friday,0,rainy
+2024-12-27,Pork,meat,158,822.84,Friday,1,rainy
+2024-12-27,Tuna,fish,58,1240.38,Friday,0,sunny
+2024-12-29,Chicken,meat,35,1628.65,Sunday,0,sunny
+2024-12-29,Pork,meat,96,1943.12,Sunday,0,sunny
+2024-12-29,Chicken,meat,100,1493.07,Sunday,0,sunny
+2024-12-30,Seer Fish,fish,73,1093.07,Monday,0,sunny
+2024-12-30,Carrot,vegetable,86,962.85,Monday,0,rainy
+2024-12-31,Beans,vegetable,154,1063.43,Tuesday,0,rainy
+2024-12-31,Carrot,vegetable,92,918.19,Tuesday,0,rainy

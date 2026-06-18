@@ -1,0 +1,73 @@
+OVERVIEW
+--------
+This XGBoost model predicts `quantity_sold` using order features (product, category,
+price, day_of_week, holiday flag, weather). The same data pipeline used for the
+Linear Regression baseline was applied for a fair comparison.
+
+KEY RESULTS
+-----------
+                              Train RMSE    Test RMSE    Overfit Gap
+Linear Regression (Baseline)     33.63        35.94         -2.31
+XGBoost (Default)                19.45        39.62        -20.17
+XGBoost (Tuned)                  31.69        36.29         -4.59
+
+INTERPRETATION
+--------------
+1. DEFAULT XGBoost OVERFITTING:
+   - The default model (max_depth=6, 100 trees) achieved Train RMSE=19.45 but
+     Test RMSE=39.62 — a gap of -20.17. This is classic overfitting: the model
+     memorized training patterns but failed to generalize to unseen data.
+
+2. TUNING EFFECTIVENESS:
+   - Hyperparameter tuning via RandomizedSearchCV (30 combos, 3-fold CV) found
+     optimal parameters: max_depth=3, learning_rate=0.01, subsample=0.6,
+     colsample_bytree=0.6, min_child_weight=3.
+   - These reduce model complexity and add regularization, shrinking the overfit
+     gap from -20.17 to -4.59 — an 77% reduction in overfitting.
+
+3. COMPARISON WITH BASELINE:
+   - Linear Regression stable with test RMSE=35.94 (gap=-2.31, no overfitting).
+   - Default XGBoost worse on test data (39.62) despite better train fit.
+   - Tuned XGBoost test RMSE=36.29, marginally worse than baseline (-1.0%).
+   - On this dataset, Linear Regression performs comparably to tuned XGBoost
+     because the relationships may be largely linear.
+
+4. TOP PREDICTIVE FEATURES:
+   - is_holiday (24.4%) — strongest predictor; holidays significantly impact sales.
+   - weather_condition_rainy (12.2%) — rainy weather is the second most important.
+   - price (5.5%) — price sensitivity exists but is less influential.
+   - Product-specific features (Potato, Tuna, Pork, Carrot) each contribute ~3-5%.
+   - Day-of-week features and weather (sunny/cloudy) have lower importance.
+
+5. MODEL COMPLEXITY TRADE-OFFS:
+   - Default XGBoost: high capacity → overfits.
+   - Tuned XGBoost: regularized → generalizes better but still slightly behind
+     Linear Regression on test data.
+   - The best model choice depends on the use case:
+     * If interpretability matters → Linear Regression (simple, stable).
+     * If data grows and patterns become non-linear → XGBoost may outperform
+       with more data.
+     * If minimizing train error is critical → Default XGBoost (but risks overfit).
+
+CHARTS GENERATED
+----------------
+1. default_actual_vs_predicted.png    — Default model predictions vs actuals
+2. default_residual_plot.png          — Default model residual errors
+3. default_error_distribution.png     — Default model error histogram
+4. tuned_actual_vs_predicted.png      — Tuned model predictions vs actuals
+5. tuned_residual_plot.png            — Tuned model residual errors
+6. tuned_error_distribution.png       — Tuned model error histogram
+7. rmse_comparison.png                — Train/Test RMSE across all 3 models
+8. feature_importance.png             — Top 15 features ranked by importance
+
+RECOMMENDATIONS
+---------------
+- For now, Linear Regression is recommended for deployment (simpler, stable,
+  comparable accuracy).
+- If more data becomes available, XGBoost should be re-evaluated — tree-based
+  models typically benefit more from larger datasets.
+- Feature engineering focus: create derived features from is_holiday (e.g.,
+  holiday type, multi-day holiday flags) and weather (e.g., temperature,
+  seasonality) to potentially boost performance.
+- Consider adding lag features (previous day sales) and rolling averages
+  to capture time-series dynamics.

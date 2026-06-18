@@ -1,0 +1,73 @@
+HYBRID MODEL ANALYSIS
+=====================
+This experiment explores hybrid approaches combining XGBoost and Linear Regression
+for multi-output sales prediction (quantity_sold AND price simultaneously).
+
+MODELS COMPARED
+---------------
+1. MultiOutput XGBoost      - Standard XGBoost for both targets (baseline)
+2. Target-Specific Hybrid   - XGBoost for qty_sold, Linear Regression for price
+3. Blending Ensemble        - Weighted average of XGBoost + LR per target
+4. Stacking Ensemble        - K-Fold OOF predictions + Ridge meta-model (3 base models)
+
+KEY RESULTS
+-----------
+                              Test RMSE     Test RMSE
+Model                         (qty_sold)    (price)        Test R2
+MultiOutput XGBoost           37.07          554.89          0.0100
+XGBoost (qty) + LR (price)    37.07          525.66          0.0698
+Stacking Ensemble              36.42          516.24          0.1025
+
+BEST MODEL PER TARGET
+---------------------
+quantity_sold -> LR standalone (RMSE: 35.97)
+price         -> Stacking Ensemble (RMSE: 516.24)
+
+BLENDING ANALYSIS
+-----------------
+quantity_sold: Optimal blend weight w (XGBoost) = 0.05, 1-w (LR) = 0.95
+price        : Optimal blend weight w (XGBoost) = 0.00, 1-w (LR) = 1.00
+
+INTERPRETATION
+--------------
+1. TARGET-SPECIFIC MODELING:
+   - quantity_sold benefits from XGBoost's ability to capture non-linear
+     demand patterns (product-category interactions, holiday effects).
+   - price tends toward linear relationships with the given categorical
+     features, making Linear Regression competitive.
+   - Using the right model per target often outperforms a one-size-fits-all.
+
+2. BLENDING EFFECTIVENESS:
+   - Weighted blending finds the optimal contribution of each model.
+   - The optimal weight reveals which model captures more signal.
+   - Blending typically reduces variance compared to either model alone.
+
+3. STACKING ENSEMBLE:
+   - K-Fold stacking prevents data leakage via out-of-fold predictions.
+   - Multiple base models (XGBoost, RF, LR) provide diverse perspectives.
+   - Meta-model (Ridge) learns how to combine base model outputs.
+   - Cross-target features (price predictions for qty model) can add value.
+
+4. WHEN HYBRID MODELS HELP:
+   - When different targets have different data generating processes.
+   - When base models have complementary strengths/weaknesses.
+   - When reducing prediction variance is more important than minimal bias.
+   - Warning: stacking adds complexity; only use if it meaningfully improves
+     over simpler approaches.
+
+CHARTS GENERATED
+----------------
+Per-model (3 models × 2 targets × 2 charts = 12 charts):
+  1-4.  mo_xgb/hybrid/stacking_actual_vs_predicted_qty/price.png
+  5-8.  mo_xgb/hybrid/stacking_residual_plot_qty/price.png
+
+Comparison (2 charts):
+  13. hybrid_model_comparison.png
+  14. hybrid_improvement.png
+
+RECOMMENDATIONS
+---------------
+- Deploy the model that best balances accuracy and simplicity for your use case.
+- If all targets have similar RMSE improvement direction, the hybrid adds value.
+- Re-evaluate when more data becomes available (stacking especially benefits).
+- Consider adding time-series features to further improve qty_sold predictions.

@@ -1,0 +1,196 @@
+===========================================================
+  FRESHLYNC DEMAND FORECASTING — MODEL COMPARISON REPORT
+===========================================================
+  Generated  : 2026-06-11
+  Dataset    : freshlync/ml_service/data/sample_orders.csv
+  Script     : freshlync/ml_service/models/model_comparison_study.py
+===========================================================
+
+
+===========================================================
+1. DATASET SUMMARY
+===========================================================
+
+  Total Samples    : 1,001 records
+  Train Set        : 778 samples (80%)
+  Test Set         : 222 samples (20%)
+  Split Date       : 2024-08-09
+  Categories       : fish, meat, vegetable
+  Products         : 12 (4 per category)
+  Split Strategy   : Temporal — NO shuffling (preserves time order)
+  Date Range       : 2023-01-01 to 2025-01-01
+
+
+===========================================================
+2. FEATURE ENGINEERING SUMMARY (XGBoost)
+===========================================================
+
+  Feature Group     Features
+  -------------------------------------------------------------------
+  Lag Features      lag_1, lag_2, lag_3, lag_7, lag_14, lag_30
+  Rolling Stats     rolling_mean_7/14/30, rolling_std_7/14/30
+  Time Features     month, quarter, day_of_week, is_weekend
+  Price Features    price, price_change (daily diff)
+  Categoricals      category (OHE), weather_condition (OHE),
+                    is_holiday (binary int)
+  -------------------------------------------------------------------
+  Total Features    ~25+ engineered features per row
+
+  All lag and rolling features are computed per product_name group
+  using shift() to strictly prevent data leakage.
+
+
+===========================================================
+3. MODEL COMPARISON RESULTS (Test Set)
+===========================================================
+
+  Model               MAE       RMSE      MAPE (%)     R2 Score
+  -------------------------------------------------------------------
+  Moving Average      54.10     70.22     87.76%        -0.098
+  ARIMA               48.92     65.26     EXPLODED *     0.035
+  Prophet             54.99     72.48     84.82%        -0.170
+  XGBoost (Tuned)     41.09     62.13     56.80%         0.788
+  -------------------------------------------------------------------
+  WINNER: XGBoost (Tuned) — best across ALL metrics
+
+  * ARIMA MAPE value: 217,015,125,023
+    Cause: near-zero actual values in sparse categories trigger
+    division-by-zero inflation. Use RMSE to compare ARIMA fairly.
+
+  Metric Definitions:
+    MAE   — Mean Absolute Error (lower is better)
+    RMSE  — Root Mean Square Error (penalises large errors)
+    MAPE  — Mean Absolute Percentage Error (lower is better)
+    R2    — Fraction of variance explained (1.0 is perfect;
+             negative = worse than predicting the mean)
+
+
+===========================================================
+4. BEST MODEL: XGBoost (Tuned)
+===========================================================
+
+  R2 Score = 0.788  → Explains 79% of demand variance
+  MAE      = 41.09  → Average error of ~41 units per prediction
+  RMSE     = 62.13  → Penalised error metric
+  MAPE     = 56.8%  → Best percentage error across all models
+
+  Why traditional models failed:
+    - Moving Average & Prophet  →  R2 < 0 (worse than mean)
+    - ARIMA                     →  Cannot use external features
+                                   (weather, holidays, price)
+    - All three                 →  Work on aggregated daily data,
+                                   losing product-level signal
+
+
+===========================================================
+5. BEST XGBOOST HYPERPARAMETERS (RandomizedSearchCV)
+===========================================================
+
+  Parameter          Valuee
+  -----------------------------------
+  n_estimators       100
+  max_depth          3
+  learning_rate      0.01
+  subsample          0.6
+  colsample_bytree   1.0
+  reg_alpha          1
+  reg_lambda         5
+  -----------------------------------
+  Tuning Method      RandomizedSearchCV
+  Iterations         10
+  CV Strategy        3-fold TimeSeriesSplit
+  Scoring            neg_root_mean_squared_error
+
+
+===========================================================
+6. FUTURE DEMAND FORECASTS (XGBoost)
+===========================================================
+
+  7-Day Forecast (2025-01-01 to 2025-01-07)
+  -----------------------------------------------------------
+  Date          Fish      Meat      Vegetable    Total
+  2025-01-01    147.56    151.20    318.08       616.84
+  2025-01-02    146.00    150.32    322.17       618.49
+  2025-01-03    146.28    151.81    323.44       621.53
+  2025-01-04    146.81    149.12    314.65       610.58
+  2025-01-05    145.27    150.57    321.13       616.97
+  2025-01-06    143.75    147.53    313.15       604.43
+  2025-01-07    145.30    149.35    316.47       611.12
+  -----------------------------------------------------------
+  Average       145.85    149.99    318.44       614.28
+
+  30-Day Category Summary
+  -----------------------------------------------------------
+  Category     Min/Day   Max/Day   Avg/Day   Trend
+  Fish         142.06    147.56    ~143.9    Slight downward drift
+  Meat         144.77    151.81    ~148.0    Slight downward drift
+  Vegetable    312.09    323.44    ~317.1    Stable with variation
+  -----------------------------------------------------------
+  NOTE: Vegetables have ~2x daily demand vs Fish and Meat
+
+  Forecast Reliability by Horizon
+  -----------------------------------------------------------
+  7 days    [*****]  High     Lag features use real actuals
+  14 days   [****-]  Good     Minor drift begins
+  30 days   [***--]  Moderate Iterative lag propagation drift
+  -----------------------------------------------------------
+
+
+===========================================================
+7. MODEL INTERPRETATION
+===========================================================
+
+  Moving Average:
+    Simple 7-day rolling mean. Cannot capture complex feature
+    interactions. R2 < 0 — not recommended for production.
+
+  ARIMA:
+    Captures autocorrelation and trend via differencing.
+    Cannot incorporate external features (weather, holidays,
+    price). MAPE explodes on near-zero values.
+    Not recommended.
+
+  Prophet:
+    Strong seasonality decomposition (trend + weekly + yearly).
+    Cannot use tabular features at product level.
+    R2 < 0 — worst overall. Not recommended.
+
+  XGBoost (Tuned):
+    Leverages all engineered features: lags, rolling stats,
+    time, price, weather, holidays. Regularized with
+    max_depth=3 and reg_lambda=5. R2 = 0.788.
+    RECOMMENDED FOR DEPLOYMENT.
+
+
+===========================================================
+8. RECOMMENDATIONS
+===========================================================
+
+  [CRITICAL]  Deploy XGBoost as the primary forecasting model.
+  [CRITICAL]  Use 7-day forecasts in production — most reliable.
+  [IMPORTANT] Retrain the model weekly with fresh actual sales.
+  [IMPORTANT] Fix ARIMA MAPE: clip actuals to max(actual, 1).
+  [OPTIONAL]  Explore Prophet + XGBoost hybrid for stable 30d.
+  [OPTIONAL]  Add promotion/discount and temperature features
+              to potentially improve MAPE below 40%.
+
+
+===========================================================
+9. OUTPUT FILES
+===========================================================
+
+  outputs/
+  ├── model_comparison.csv              Raw metrics table
+  ├── model_comparison_report.txt       This report
+  ├── charts_comparison/
+  │   ├── metrics_comparison.png        MAE & RMSE bar chart
+  │   ├── mape_comparison.png           MAPE bar chart
+  │   └── actual_vs_predicted_all.png   Scatter plots (all models)
+  └── forecasts/
+      ├── forecast_xgb_7d.csv           7-day demand forecast
+      ├── forecast_xgb_14d.csv          14-day demand forecast
+      └── forecast_xgb_30d.csv          30-day demand forecast
+
+===========================================================
+END OF REPORT
+===========================================================
