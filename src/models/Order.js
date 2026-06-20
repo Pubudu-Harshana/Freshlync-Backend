@@ -8,6 +8,8 @@ const orderItemSchema = new mongoose.Schema({
   unit:     { type: String, default: 'kg' },
   supplier: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   supplierName: { type: String, default: '' },
+  supplierPrice:    { type: Number },
+  marketplacePrice: { type: Number },
 });
 
 const supplierStatusSchema = new mongoose.Schema({
@@ -29,7 +31,7 @@ const orderSchema = new mongoose.Schema({
 
   status: {
     type: String,
-    enum: ['Pending', 'In Transit', 'Delivered', 'Cancelled'],
+    enum: ['Pending Payment Verification', 'Pending', 'In Transit', 'Delivered', 'Cancelled'],
     default: 'Pending',
   },
 
@@ -48,6 +50,12 @@ const orderSchema = new mongoose.Schema({
 
   paymentMethod: { type: String, default: 'card' },
   notes:         { type: String, default: '' },
+  paymentSlip:   { type: String, default: '' },
+  paymentStatus: {
+    type: String,
+    enum: ['Pending Verification', 'Approved', 'Rejected'],
+    default: 'Pending Verification'
+  }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Order', orderSchema);

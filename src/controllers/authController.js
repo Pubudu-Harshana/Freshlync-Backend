@@ -1,5 +1,6 @@
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+const jwt    = require('jsonwebtoken');
+const crypto = require('crypto');
+const User   = require('../models/User');
 
 const signToken = (id) =>
   jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
@@ -11,13 +12,17 @@ exports.register = async (req, res) => {
   const exists = await User.findOne({ email });
   if (exists) return res.status(400).json({ message: 'Email already registered' });
 
+  // Security: Only allow buyer or supplier on self-registration — admin cannot be self-assigned
+  const allowedRoles = ['buyer', 'supplier'];
+  const assignedRole = allowedRoles.includes(role) ? role : 'buyer';
+
   const user = await User.create({
     name,
     email,
     password,
-    role: role || 'buyer',
+    role: assignedRole,
     company,
-    verificationStatus: role === 'supplier' ? 'pending' : 'unverified'
+    verificationStatus: assignedRole === 'supplier' ? 'pending' : 'unverified'
   });
   const token = signToken(user._id);
 
@@ -51,10 +56,22 @@ exports.login = async (req, res) => {
   });
 };
 
+// Helper: mask sensitive bank details — show only last 4 chars
+const maskBankDetails = (userObj) => {
+  if (userObj.accountNumber && userObj.accountNumber.length > 4) {
+    userObj.accountNumber = '****' + userObj.accountNumber.slice(-4);
+  }
+  if (userObj.sortCode && userObj.sortCode.length > 4) {
+    userObj.sortCode = '**-**-' + userObj.sortCode.slice(-2);
+  }
+  return userObj;
+};
+
 // GET /api/auth/me
 exports.getMe = async (req, res) => {
   const user = await User.findById(req.user._id).select('-password');
-  res.json(user);
+  const userObj = user.toObject();
+  res.json(maskBankDetails(userObj));
 };
 
 // PUT /api/auth/profile
@@ -98,7 +115,8 @@ exports.updateProfile = async (req, res) => {
     { new: true, runValidators: true }
   ).select('-password');
 
-  res.json(user);
+  const userObj = user.toObject();
+  res.json(maskBankDetails(userObj));
 };
 
 // PUT /api/auth/password
@@ -219,3 +237,64 @@ exports.submitBusinessVerification = async (req, res) => {
   res.json(user);
 };
 
+// POST /api/auth/forgot-password
+exports.forgotPassword = async (req, res) => {
+  const { email } = req.body;
+  if (!email) return res.status(400).json({ message: 'Email is required.' });
+
+  // Always return the same response to prevent email enumeration
+  const SAFE_MSG = { message: 'If an account with that email exists, a password reset link has been sent.' };
+
+  const user = await User.findOne({ email: email.toLowerCase().trim() });
+  if (!user) return res.json(SAFE_MSG);
+
+  // Generate cryptographically secure random token
+  const rawToken   = crypto.randomBytes(32).toString('hex');
+  const hashedToken = crypto.createHash('sha256').update(rawToken).digest('hex');
+
+  user.resetPasswordToken   = hashedToken;
+  user.resetPasswordExpires = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+  await user.save({ validateBeforeSave: false });
+
+  const resetUrl = `${process.env.CLIENT_URL}/reset-password?token=${rawToken}`;
+
+  try {
+    const { sendPasswordResetEmail } = require('../utils/sendEmail');
+    await sendPasswordResetEmail(user.email, resetUrl);
+    res.json(SAFE_MSG);
+  } catch (err) {
+    // Clear token on email failure
+    user.resetPasswordToken   = undefined;
+    user.resetPasswordExpires = undefined;
+    await user.save({ validateBeforeSave: false });
+    console.error('Email send error:', err.message);
+    res.status(500).json({ message: 'Failed to send reset email. Please try again later.' });
+  }
+};
+
+// POST /api/auth/reset-password
+exports.resetPassword = async (req, res) => {
+  const { token, password } = req.body;
+  if (!token || !password) return res.status(400).json({ message: 'Token and new password are required.' });
+  if (password.length < 6) return res.status(400).json({ message: 'Password must be at least 6 characters.' });
+
+  // Hash the raw token from the URL to compare with stored hash
+  const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+
+  const user = await User.findOne({
+    resetPasswordToken:   hashedToken,
+    resetPasswordExpires: { $gt: Date.now() }, // must not be expired
+  });
+
+  if (!user) {
+    return res.status(400).json({ message: 'Invalid or expired reset link. Please request a new one.' });
+  }
+
+  // Update password and clear reset fields
+  user.password             = password;
+  user.resetPasswordToken   = undefined;
+  user.resetPasswordExpires = undefined;
+  await user.save();
+
+  res.json({ message: 'Password reset successful. You can now log in with your new password.' });
+};

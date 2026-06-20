@@ -42,13 +42,17 @@ const userSchema = new mongoose.Schema({
       uploadedAt: { type: Date, default: Date.now }
     }],
   },
-  verificationHistory: [{
+  verificationHistory: [{ 
     status: String,
     notes: String,
     updatedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     updatedByName: String,
     updatedAt: { type: Date, default: Date.now }
-  }]
+  }],
+
+  // Password reset fields
+  resetPasswordToken:   { type: String, default: undefined },
+  resetPasswordExpires: { type: Date,   default: undefined },
 }, { timestamps: true });
 
 // Hash password before save

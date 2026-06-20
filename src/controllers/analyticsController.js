@@ -17,7 +17,7 @@ exports.getSummary = async (req, res) => {
   orders.forEach(order => {
     // filter items belonging to this supplier
     const supItems = order.items.filter(item => item.supplier?.toString() === supplierIdStr);
-    const itemSubtotal = supItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const itemSubtotal = supItems.reduce((sum, item) => sum + (item.supplierPrice !== undefined ? item.supplierPrice : item.price) * item.quantity, 0);
     
     // get supplier specific status
     const supStatusEntry = order.supplierStatuses?.find(s => s.supplier?.toString() === supplierIdStr);
@@ -73,7 +73,7 @@ exports.getChartData = async (req, res) => {
       const key = `${year}-${month}`;
       
       const supItems = order.items.filter(item => item.supplier?.toString() === supplierIdStr);
-      const revenue = supItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      const revenue = supItems.reduce((sum, item) => sum + (item.supplierPrice !== undefined ? item.supplierPrice : item.price) * item.quantity, 0);
 
       if (!grouped[key]) {
         grouped[key] = { year, month, revenue: 0, orders: 0 };
@@ -93,4 +93,61 @@ exports.getChartData = async (req, res) => {
     }));
 
   res.json(chart);
+};
+
+// POST /api/analytics/predict (supplier, admin)
+exports.predictSales = async (req, res) => {
+  const { spawn } = require('child_process');
+  const path = require('path');
+  const { product_name, category, day_of_week, is_holiday, weather_condition } = req.body;
+
+  if (!product_name || !category || !day_of_week || !weather_condition) {
+    return res.status(400).json({ message: 'Missing required fields for prediction' });
+  }
+
+  // Path to python script
+  const scriptPath = path.join(__dirname, '../../freshlync/ml_service/predict.py');
+
+  const child = spawn('python', [scriptPath]);
+
+  let stdoutData = '';
+  let stderrData = '';
+
+  child.stdout.on('data', (data) => {
+    stdoutData += data.toString();
+  });
+
+  child.stderr.on('data', (data) => {
+    stderrData += data.toString();
+  });
+
+  child.on('close', (code) => {
+    if (code !== 0) {
+      console.error(`Python script exited with code ${code}. Error: ${stderrData}`);
+      return res.status(500).json({ message: 'Prediction service failed', error: stderrData });
+    }
+
+    try {
+      const result = JSON.parse(stdoutData.trim());
+      if (result.error) {
+        return res.status(400).json({ message: 'Prediction error', error: result.error });
+      }
+      res.json(result);
+    } catch (e) {
+      console.error('Failed to parse prediction output:', stdoutData);
+      res.status(500).json({ message: 'Invalid prediction output format' });
+    }
+  });
+
+  // Write inputs as JSON to stdin
+  const inputPayload = JSON.stringify({
+    product_name,
+    category,
+    day_of_week,
+    is_holiday: !!is_holiday,
+    weather_condition,
+  });
+
+  child.stdin.write(inputPayload);
+  child.stdin.end();
 };

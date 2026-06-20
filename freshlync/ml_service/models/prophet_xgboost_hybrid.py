@@ -65,6 +65,12 @@ def load_and_prepare_data(path=DATA_PATH):
     """
     df = pd.read_csv(path)
     df['date'] = pd.to_datetime(df['date'])
+    
+    # Shift dates dynamically to align the maximum date with today
+    max_date = df['date'].max()
+    today = pd.Timestamp.now().normalize()
+    offset = today - max_date
+    df['date'] = df['date'] + offset
     df = df.sort_values('date').reset_index(drop=True)
 
     print(f'Raw orders: {df.shape[0]} rows, {df["date"].nunique()} unique days')
