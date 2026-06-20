@@ -1,5 +1,8 @@
+const fs = require('fs');
+const path = require('path');
 const Order = require('../models/Order');
 const Product = require('../models/Product');
+const User = require('../models/User');
 
 // GET /api/orders
 exports.getOrders = async (req, res) => {
@@ -11,6 +14,7 @@ exports.getOrders = async (req, res) => {
     query.buyer = req.user._id;
   } else if (req.user.role === 'supplier') {
     query['items.supplier'] = req.user._id;
+    query.status = { $ne: 'Pending Payment Verification' };
   }
   // admin sees all
 
@@ -45,7 +49,26 @@ exports.getOrders = async (req, res) => {
       const supStatusEntry = o.supplierStatuses?.find(s => s.supplier?.toString() === supplierIdStr);
       o.status = supStatusEntry ? supStatusEntry.status : o.status;
       o.items = o.items.filter(item => item.supplier?.toString() === supplierIdStr);
+      
+      // Override price and total for supplier view, hide marketplacePrice
+      o.items = o.items.map(item => {
+        const base = item.supplierPrice !== undefined ? item.supplierPrice : item.price;
+        item.price = base;
+        delete item.marketplacePrice;
+        return item;
+      });
       o.total = o.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      return o;
+    });
+  } else if (req.user.role === 'buyer') {
+    orders = rawOrders.map(order => {
+      const o = order.toObject ? order.toObject() : order;
+      
+      // Hide supplierPrice from buyer
+      o.items = o.items.map(item => {
+        delete item.supplierPrice;
+        return item;
+      });
       return o;
     });
   }
@@ -67,13 +90,34 @@ exports.getOrder = async (req, res) => {
     if (!isSupplierInvolved) {
       return res.status(403).json({ message: 'Access denied' });
     }
+    if (order.status === 'Pending Payment Verification') {
+      return res.status(403).json({ message: 'Access denied. Order is awaiting payment verification.' });
+    }
 
     const o = order.toObject();
     const supStatusEntry = o.supplierStatuses?.find(s => s.supplier?.toString() === supplierIdStr);
     o.status = supStatusEntry ? supStatusEntry.status : o.status;
     o.items = o.items.filter(item => item.supplier?.toString() === supplierIdStr);
+    
+    // Override price and total for supplier view, hide marketplacePrice
+    o.items = o.items.map(item => {
+      const base = item.supplierPrice !== undefined ? item.supplierPrice : item.price;
+      item.price = base;
+      delete item.marketplacePrice;
+      return item;
+    });
     o.total = o.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
+    return res.json(o);
+  }
+
+  if (req.user.role === 'buyer') {
+    const o = order.toObject();
+    // Hide supplierPrice from buyer
+    o.items = o.items.map(item => {
+      delete item.supplierPrice;
+      return item;
+    });
     return res.json(o);
   }
 
@@ -82,39 +126,81 @@ exports.getOrder = async (req, res) => {
 
 // POST /api/orders  (buyer places order)
 exports.placeOrder = async (req, res) => {
-  const { items, delivery, paymentMethod, notes } = req.body;
+  const { items, delivery, paymentMethod, notes, paymentSlip } = req.body;
 
   if (!items || items.length === 0) {
     return res.status(400).json({ message: 'No items in order' });
   }
 
-  // Calculate total
-  const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  if (paymentMethod === 'bank' && !paymentSlip) {
+    return res.status(400).json({ message: 'Payment slip is required for bank transfers.' });
+  }
 
-  // Enrich items with supplier info and find unique suppliers
+  // Load margin setting
+  let marginSetting = 15;
+  const settingsPath = path.join(__dirname, '../../freshlync/ml_service/outputs/settings.json');
+  if (fs.existsSync(settingsPath)) {
+    try {
+      const settings = JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
+      if (settings.margin !== undefined) {
+        marginSetting = parseFloat(settings.margin);
+      }
+    } catch (err) {
+      console.error("Error reading settings.json during order checkout:", err);
+    }
+  }
+
+  // Enrich items with supplier info and freeze/snapshot pricing
   const enrichedItems = [];
   const uniqueSuppliersSet = new Set();
+  let calculatedTotal = 0;
 
   for (const item of items) {
     if (item.product) {
       const prod = await Product.findById(item.product).populate('supplier');
       if (prod) {
         const supIdStr = prod.supplier?._id?.toString() || prod.supplier?.toString();
+        const basePrice = prod.basePrice !== undefined ? prod.basePrice : prod.price;
+        const sellingPrice = prod.sellingPrice !== undefined ? prod.sellingPrice : parseFloat((basePrice * (1 + marginSetting / 100)).toFixed(2));
+
         enrichedItems.push({
-          ...item,
+          product: item.product,
+          name: prod.name,
+          quantity: item.quantity,
+          unit: item.unit || prod.unit || 'kg',
+          price: sellingPrice, // Legacy field contains sellingPrice
+          supplierPrice: basePrice,
+          marketplacePrice: sellingPrice,
           supplier: prod.supplier?._id || prod.supplier,
           supplierName: prod.supplierName || prod.supplier?.company || prod.supplier?.name || 'Unknown Supplier'
         });
+
+        calculatedTotal += sellingPrice * item.quantity;
+
         if (supIdStr) {
           uniqueSuppliersSet.add(supIdStr);
         }
       } else {
-        enrichedItems.push(item);
+        // Fallback
+        enrichedItems.push({
+          ...item,
+          supplierPrice: item.price,
+          marketplacePrice: item.price
+        });
+        calculatedTotal += item.price * item.quantity;
       }
     } else {
-      enrichedItems.push(item);
+      // Fallback
+      enrichedItems.push({
+        ...item,
+        supplierPrice: item.price,
+        marketplacePrice: item.price
+      });
+      calculatedTotal += item.price * item.quantity;
     }
   }
+
+  const total = parseFloat(calculatedTotal.toFixed(2));
 
   const firstSupplierId = uniqueSuppliersSet.size > 0 ? Array.from(uniqueSuppliersSet)[0] : null;
   const supplierStatuses = Array.from(uniqueSuppliersSet).map(supId => ({
@@ -130,8 +216,29 @@ exports.placeOrder = async (req, res) => {
     delivery,
     paymentMethod,
     notes,
+    paymentSlip: paymentSlip || '',
+    paymentStatus: paymentMethod === 'bank' ? 'Pending Verification' : 'Approved',
+    status: paymentMethod === 'bank' ? 'Pending Payment Verification' : 'Pending',
     supplierStatuses
   });
+
+  // Admin notification for new Bank Transfer verification request
+  if (paymentMethod === 'bank') {
+    try {
+      const Notification = require('../models/Notification');
+      const admin = await User.findOne({ role: 'admin' });
+      if (admin) {
+        await Notification.create({
+          user: admin._id,
+          title: 'Payment Verification Request',
+          message: `New payment verification request received from ${req.user.name || req.user.email}`,
+          type: 'system'
+        });
+      }
+    } catch (err) {
+      console.error("Error creating payment notification for admin:", err);
+    }
+  }
 
   res.status(201).json(order);
 };
@@ -203,4 +310,106 @@ exports.updateStatus = async (req, res) => {
   }
 
   res.status(403).json({ message: 'Access denied' });
+};
+
+// PUT /api/orders/:id/verify-payment  (admin verifies payment slip)
+exports.verifyPayment = async (req, res) => {
+  const { action } = req.body;
+  if (!['approve', 'reject'].includes(action)) {
+    return res.status(400).json({ message: 'Invalid action. Must be approve or reject.' });
+  }
+
+  const order = await Order.findById(req.params.id);
+  if (!order) return res.status(404).json({ message: 'Order not found' });
+
+  const Notification = require('../models/Notification');
+
+  if (action === 'approve') {
+    order.paymentStatus = 'Approved';
+    order.status = 'Pending';
+    // set supplierStatuses of order to Pending
+    order.supplierStatuses.forEach(s => {
+      s.status = 'Pending';
+    });
+    await order.save();
+
+    // 1. Notify buyer
+    try {
+      await Notification.create({
+        user: order.buyer,
+        title: 'Order Payment Approved',
+        message: `Your payment has been verified and your order has been confirmed.`,
+        type: 'order'
+      });
+    } catch (err) {
+      console.error(err);
+    }
+
+    // 2. Notify supplier(s) involved
+    try {
+      const suppliers = [...new Set(order.items.filter(item => item.supplier).map(item => item.supplier.toString()))];
+      for (const supId of suppliers) {
+        await Notification.create({
+          user: supId,
+          title: 'New Order Available',
+          message: `A new verified order is available for processing.`,
+          type: 'order'
+        });
+      }
+    } catch (err) {
+      console.error(err);
+    }
+
+  } else if (action === 'reject') {
+    order.paymentStatus = 'Rejected';
+    await order.save();
+
+    // Notify buyer
+    try {
+      await Notification.create({
+        user: order.buyer,
+        title: 'Order Payment Rejected',
+        message: `Your payment slip has been rejected. Please upload a new payment slip.`,
+        type: 'order'
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  res.json(order);
+};
+
+// PUT /api/orders/:id/reupload-slip  (customer uploads a replacement slip)
+exports.reuploadSlip = async (req, res) => {
+  const { paymentSlip } = req.body;
+  if (!paymentSlip) {
+    return res.status(400).json({ message: 'Payment slip is required.' });
+  }
+
+  const order = await Order.findOne({ _id: req.params.id, buyer: req.user._id });
+  if (!order) return res.status(404).json({ message: 'Order not found' });
+
+  order.paymentSlip = paymentSlip;
+  order.paymentStatus = 'Pending Verification';
+  order.status = 'Pending Payment Verification';
+  await order.save();
+
+  // Notify Admin
+  try {
+    const Notification = require('../models/Notification');
+    const admin = await User.findOne({ role: 'admin' });
+    if (admin) {
+      await Notification.create({
+        user: admin._id,
+        title: 'Payment Slip Resubmitted',
+        message: `Customer has resubmitted a payment slip for Order #${order._id.toString().slice(-6).toUpperCase()}`,
+        type: 'system'
+      });
+    }
+  } catch (err) {
+    console.error(err);
+  }
+
+  res.json(order);
 };

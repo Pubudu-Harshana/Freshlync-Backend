@@ -4,6 +4,8 @@ const productSchema = new mongoose.Schema({
   name:        { type: String, required: true, trim: true },
   category:    { type: String, required: true, enum: ['Fish', 'Meat', 'Vegetables', 'Dairy', 'Grains', 'Other'] },
   price:       { type: Number, required: true, min: 0 },
+  basePrice:    { type: Number, required: true },
+  sellingPrice: { type: Number, required: true },
   unit:        { type: String, required: true, default: 'kg' },
   stock:       { type: Number, required: true, default: 0 },
   minOrder:    { type: Number, default: 1 },
