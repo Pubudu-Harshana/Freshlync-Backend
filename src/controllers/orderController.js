@@ -3,6 +3,7 @@ const path = require('path');
 const Order = require('../models/Order');
 const Product = require('../models/Product');
 const User = require('../models/User');
+const Invoice = require('../models/Invoice');
 
 // GET /api/orders
 exports.getOrders = async (req, res) => {
@@ -202,6 +203,25 @@ exports.placeOrder = async (req, res) => {
 
   const total = parseFloat(calculatedTotal.toFixed(2));
 
+  // B2B Net 30 Credit Limit Check
+  if (paymentMethod === 'net30') {
+    const userInvoices = await Invoice.find({ buyer: req.user._id });
+    let outstanding = 0;
+    userInvoices.forEach(inv => {
+      if (inv.status === 'Unpaid' || inv.status === 'Overdue') {
+        outstanding += inv.amount;
+      }
+    });
+    const creditLimit = req.user.creditLimit || 100000;
+    const availableCredit = creditLimit - outstanding;
+
+    if (availableCredit < total) {
+      return res.status(400).json({
+        message: `Insufficient B2B credit limit. (Required: £${total.toFixed(2)}, Available: £${availableCredit.toFixed(2)}). Please request a credit limit increase on your Billing Dashboard.`
+      });
+    }
+  }
+
   const firstSupplierId = uniqueSuppliersSet.size > 0 ? Array.from(uniqueSuppliersSet)[0] : null;
   const supplierStatuses = Array.from(uniqueSuppliersSet).map(supId => ({
     supplier: supId,
@@ -221,6 +241,23 @@ exports.placeOrder = async (req, res) => {
     status: paymentMethod === 'bank' ? 'Pending Payment Verification' : 'Pending',
     supplierStatuses
   });
+
+  // B2B Net 30 Invoice Creation
+  if (paymentMethod === 'net30') {
+    try {
+      await Invoice.create({
+        buyer: req.user._id,
+        order: order._id,
+        invoiceNumber: `INV-2026-${Math.floor(100000 + Math.random() * 900000)}`,
+        amount: total,
+        status: 'Unpaid',
+        issueDate: new Date(),
+        dueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) // Net 30
+      });
+    } catch (err) {
+      console.error("Error creating B2B invoice document during checkout:", err);
+    }
+  }
 
   // Admin notification for new Bank Transfer verification request
   if (paymentMethod === 'bank') {

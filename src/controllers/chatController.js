@@ -1,60 +1,170 @@
-const { GoogleGenerativeAI } = require('@google/generative-ai');
+/**
+ * Chat Controller for the FreshLync Chatbot.
+ * Lightweight request handler that orchestrates intent classification,
+ * database query execution, and standard structured JSON formatting.
+ */
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const intentService = require('../services/intentService');
+const productService = require('../services/productService');
+const orderService = require('../services/orderService');
+const notificationService = require('../services/notificationService');
+const reviewService = require('../services/reviewService');
+const { formatResponse } = require('../formatters/responseFormatter');
 
-const SYSTEM_PROMPT = `You are FreshLync AI, a smart and friendly assistant for FreshLync — a B2B fresh food and seafood marketplace that connects verified suppliers with buyers.
-
-Your role is to help buyers and suppliers with:
-- Finding and comparing products (seafood, fresh produce, etc.)
-- Understanding pricing and minimum order quantities
-- Tracking and managing orders
-- Learning about the verification process for suppliers
-- Navigating the FreshLync marketplace platform
-- General questions about food sourcing, quality, and certifications
-
-Guidelines:
-- Be concise, professional, and friendly
-- Give specific, helpful answers — avoid generic filler responses
-- If asked about a specific product or price you don't have live data for, guide the user to browse the marketplace or check their dashboard
-- For order status, guide users to the "My Shipments" or "Orders" section in the dashboard
-- Keep responses short (2-4 sentences) unless a detailed explanation is needed
-- Use bullet points for lists
-- Never make up specific prices or stock levels — say you don't have live data and direct users to the marketplace
-- If asked something completely unrelated to FreshLync or food/business, politely redirect back to FreshLync topics`;
-
-// POST /api/chat
+/**
+ * Handles incoming chatbot queries.
+ * POST /api/chat
+ */
 exports.chat = async (req, res) => {
-  const { message, history = [] } = req.body;
+  const { message } = req.body;
+  const user = req.user;
 
   if (!message || !message.trim()) {
-    return res.status(400).json({ message: 'Message is required.' });
+    return res.status(400).json({ success: false, message: 'Message is required.' });
   }
 
-  const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+  try {
+    // 1. Detect user intent and extract parameters
+    const { intent, confidence, params } = intentService.detectIntent(message);
 
-  // Build conversation history for Gemini (last 10 messages max for context)
-  const recentHistory = history.slice(-10);
+    let responseType = 'fallback';
+    let responseData = {};
 
-  const geminiHistory = [
-    // Inject system prompt as the first user/model exchange
-    {
-      role: 'user',
-      parts: [{ text: SYSTEM_PROMPT }],
-    },
-    {
-      role: 'model',
-      parts: [{ text: "Understood! I'm FreshLync AI, ready to help buyers and suppliers with products, orders, pricing, and everything related to the FreshLync marketplace. How can I assist you today?" }],
-    },
-    // Add actual conversation history
-    ...recentHistory.map(msg => ({
-      role: msg.role === 'user' ? 'user' : 'model',
-      parts: [{ text: msg.text }],
-    })),
-  ];
+    // 2. Route to appropriate database service based on intent
+    switch (intent) {
+      case intentService.INTENTS.ORDER_STATUS:
+        if (params.orderId) {
+          try {
+            const orderDetails = await orderService.getOrderDetails(params.orderId, user._id, user.role);
+            responseType = 'order_status';
+            responseData = {
+              orderFound: true,
+              order: orderDetails
+            };
+          } catch (err) {
+            // Handle order not found (404) or unauthorized (403) specifically
+            if (err.status === 403 || err.status === 404) {
+              responseType = 'order_status';
+              responseData = {
+                orderFound: false,
+                error: err.message,
+                status: err.status
+              };
+            } else {
+              throw err;
+            }
+          }
+        } else {
+          // If no order ID was provided, return their recent orders as a helpful context
+          const recentOrders = await orderService.getRecentOrders(user._id, user.role);
+          responseType = 'order_status';
+          responseData = {
+            orderFound: false,
+            error: 'Please provide a specific Order ID to track.',
+            recentOrders
+          };
+        }
+        break;
 
-  const chatSession = model.startChat({ history: geminiHistory });
-  const result = await chatSession.sendMessage(message.trim());
-  const reply = result.response.text();
+      case intentService.INTENTS.PRODUCT_PRICE:
+        if (params.productName) {
+          const priceInfo = await productService.getProductInfo(params.productName);
+          responseType = 'product_info';
+          responseData = {
+            queryType: 'price',
+            productName: params.productName,
+            ...priceInfo
+          };
+        } else {
+          // Fallback if no specific product was extracted
+          const fallbackProducts = await productService.searchFallback(message);
+          responseType = 'fallback';
+          responseData = {
+            message: "I couldn't identify the product you're asking about. Here are some of our available products:",
+            products: fallbackProducts
+          };
+        }
+        break;
 
-  res.json({ reply });
+      case intentService.INTENTS.PRODUCT_STOCK:
+        if (params.productName) {
+          const stockInfo = await productService.getProductInfo(params.productName);
+          responseType = 'product_info';
+          responseData = {
+            queryType: 'stock',
+            productName: params.productName,
+            ...stockInfo
+          };
+        } else {
+          // Fallback if no specific product was extracted
+          const fallbackProducts = await productService.searchFallback(message);
+          responseType = 'fallback';
+          responseData = {
+            message: "I couldn't identify the product you're asking about. Here are some of our available products:",
+            products: fallbackProducts
+          };
+        }
+        break;
+
+      case intentService.INTENTS.CATEGORY_SEARCH:
+        if (params.category) {
+          const categoryProducts = await productService.getCategoryProducts(params.category);
+          responseType = 'category_search';
+          responseData = {
+            category: params.category,
+            products: categoryProducts
+          };
+        } else {
+          // Fallback if no category extracted
+          const fallbackProducts = await productService.searchFallback(message);
+          responseType = 'fallback';
+          responseData = {
+            message: "Here are some of our available products:",
+            products: fallbackProducts
+          };
+        }
+        break;
+
+      case intentService.INTENTS.NOTIFICATIONS:
+        const notificationsData = await notificationService.getRecentNotifications(user._id);
+        responseType = 'notifications';
+        responseData = notificationsData;
+        break;
+
+      case intentService.INTENTS.REVIEWS:
+        const reviewsData = await reviewService.getPlatformReviews();
+        responseType = 'reviews';
+        responseData = reviewsData;
+        break;
+
+      case intentService.INTENTS.GENERAL_HELP:
+        responseType = 'general_help';
+        responseData = {
+          userName: user.name || 'Trader'
+        };
+        break;
+
+      case intentService.INTENTS.FALLBACK_SEARCH:
+      default:
+        // Smart fallback recovery: perform database text search over query terms
+        const fallbackProducts = await productService.searchFallback(message);
+        responseType = 'fallback';
+        responseData = {
+          message: "I couldn't find a direct match for your request. Here are some products you might be looking for:",
+          products: fallbackProducts
+        };
+        break;
+    }
+
+    // 3. Format the response and send structured JSON
+    const formattedResponse = formatResponse(responseType, responseData);
+    res.json(formattedResponse);
+
+  } catch (err) {
+    console.error('[FreshLync Chat Controller Error]:', err.message);
+    res.status(500).json({
+      success: false,
+      message: 'Chat service temporarily unavailable. Please try again.'
+    });
+  }
 };

@@ -1,10 +1,12 @@
 const express = require('express');
 const router  = express.Router();
 const { protect, requireRole } = require('../middleware/auth');
-const { getSummary, getChartData, predictSales } = require('../controllers/analyticsController');
+const { getSummary, getChartData, predictSales, getEarnings } = require('../controllers/analyticsController');
 
 router.get('/summary',   protect, requireRole('supplier', 'admin'), getSummary);
 router.get('/chart',     protect, requireRole('supplier', 'admin'), getChartData);
+router.get('/earnings',  protect, requireRole('supplier'), getEarnings);
 router.post('/predict',  protect, requireRole('supplier', 'admin'), predictSales);
 
 module.exports = router;
+

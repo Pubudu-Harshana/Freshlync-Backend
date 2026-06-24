@@ -18,6 +18,7 @@ const adminRoutes     = require('./routes/admin');
 const notificationRoutes = require('./routes/notifications');
 const reviewRoutes    = require('./routes/reviews');
 const chatRoutes      = require('./routes/chat');
+const billingRoutes   = require('./routes/billing');
 
 // Connect to MongoDB Atlas
 connectDB();
@@ -65,6 +66,7 @@ app.use('/api/admin',     adminRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/reviews',   reviewRoutes);
 app.use('/api/chat',      chatRoutes);
+app.use('/api/billing',   billingRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => res.json({ status: 'ok', time: new Date() }));
