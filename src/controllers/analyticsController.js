@@ -151,3 +151,109 @@ exports.predictSales = async (req, res) => {
   child.stdin.write(inputPayload);
   child.stdin.end();
 };
+
+// GET /api/analytics/earnings  (supplier)
+exports.getEarnings = async (req, res) => {
+  try {
+    const supplierId = req.user._id;
+    const supplierIdStr = supplierId.toString();
+    const FEE_RATE = 0.10; // 10% platform commission
+
+    const orders = await Order.find({ 'items.supplier': supplierId })
+      .sort({ createdAt: -1 });
+
+    let totalEarned = 0;
+    let pendingPayout = 0;
+    let availablePayout = 0;
+    let completedPayout = 0;
+    const breakdown = [];
+
+    orders.forEach(order => {
+      const supItems = order.items.filter(
+        item => item.supplier?.toString() === supplierIdStr
+      );
+      if (supItems.length === 0) return;
+
+      const gross = supItems.reduce(
+        (sum, item) =>
+          sum + (item.supplierPrice !== undefined ? item.supplierPrice : item.price) * item.quantity,
+        0
+      );
+      const fee = parseFloat((gross * FEE_RATE).toFixed(2));
+      const net = parseFloat((gross - fee).toFixed(2));
+
+      const supStatusEntry = order.supplierStatuses?.find(
+        s => s.supplier?.toString() === supplierIdStr
+      );
+      const supplierStatus = supStatusEntry ? supStatusEntry.status : order.status;
+      const paymentApproved = order.paymentStatus === 'Approved';
+
+      let earningsStatus;
+      if (supplierStatus === 'Delivered' && paymentApproved) {
+        earningsStatus = 'Paid';
+        totalEarned += net;
+        completedPayout += net;
+      } else if (supplierStatus === 'Delivered' && !paymentApproved) {
+        earningsStatus = 'Available';
+        totalEarned += net;
+        availablePayout += net;
+      } else if (supplierStatus === 'Cancelled') {
+        earningsStatus = 'Cancelled';
+      } else {
+        earningsStatus = 'Pending';
+        pendingPayout += net;
+      }
+
+      const dateStr = new Date(order.createdAt).toLocaleDateString('en-GB', {
+        day: '2-digit', month: 'short', year: 'numeric'
+      });
+
+      breakdown.push({
+        orderId: order._id.toString().slice(-8).toUpperCase(),
+        date: dateStr,
+        amount: parseFloat(gross.toFixed(2)),
+        fee,
+        net,
+        status: earningsStatus,
+      });
+    });
+
+    // Group paid entries into monthly payout records
+    const payoutMap = {};
+    breakdown
+      .filter(b => b.status === 'Paid')
+      .forEach(b => {
+        const d = new Date(b.date);
+        const key = `${d.getFullYear()}-${d.getMonth()}`;
+        if (!payoutMap[key]) {
+          payoutMap[key] = {
+            id: `PAY-${key}`,
+            date: b.date,
+            amount: 0,
+            method: 'Direct Deposit',
+            status: 'Completed',
+          };
+        }
+        payoutMap[key].amount += b.net;
+      });
+
+    const payouts = Object.values(payoutMap)
+      .map(p => ({ ...p, amount: parseFloat(p.amount.toFixed(2)) }))
+      .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    res.json({
+      revenueSummary: {
+        totalEarned: parseFloat(totalEarned.toFixed(2)),
+        pendingPayout: parseFloat(pendingPayout.toFixed(2)),
+        availablePayout: parseFloat(availablePayout.toFixed(2)),
+        completedPayout: parseFloat(completedPayout.toFixed(2)),
+      },
+      payouts,
+      breakdown: breakdown.filter(b => b.status !== 'Cancelled'),
+    });
+  } catch (err) {
+    console.error('getEarnings error:', err);
+    res.status(500).json({ message: 'Failed to load earnings data' });
+  }
+};
+

@@ -16,6 +16,7 @@ const userSchema = new mongoose.Schema({
   accountNumber: { type: String, default: '' },
   sortCode:    { type: String, default: '' },
   isVerified: { type: Boolean, default: false },
+  creditLimit: { type: Number, default: 100000 },
   
   // Supplier Business Verification fields
   verificationStatus: {
