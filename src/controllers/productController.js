@@ -185,7 +185,8 @@ exports.createProduct = async (req, res) => {
   }
 
   const { name, category, price, unit, stock, minOrder, description, sku } = req.body;
-  const image = req.file ? `/uploads/${req.file.filename}` : '';
+  // With Cloudinary storage, req.file.path is the full HTTPS URL
+  const image = req.file ? req.file.path : '';
 
   const marginSetting = getMarginSetting();
   const basePrice = parseFloat(price);
@@ -235,6 +236,8 @@ exports.updateProduct = async (req, res) => {
   if (minOrder !== undefined) updateData.minOrder = parseInt(minOrder);
   if (description !== undefined) updateData.description = description;
   if (sku !== undefined) updateData.sku = sku;
+  // Handle image update via Cloudinary
+  if (req.file) updateData.image = req.file.path;
   if (req.body.isActive !== undefined) {
     const isApproved = req.body.isActive === true || req.body.isActive === 'true';
     if (product.isActive !== isApproved) {

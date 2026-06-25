@@ -99,7 +99,8 @@ exports.updateProfile = async (req, res) => {
   };
 
   if (req.file) {
-    updateFields.avatar = `/uploads/${req.file.filename}`;
+    // Cloudinary storage: req.file.path is the full HTTPS URL
+    updateFields.avatar = req.file.path;
   }
 
   // Remove undefined fields
@@ -171,7 +172,8 @@ exports.submitBusinessVerification = async (req, res) => {
     const docs = req.files.map(file => ({
       name: file.originalname,
       fieldName: file.fieldname,
-      url: `/uploads/${file.filename}`,
+      // Cloudinary storage: file.path is the full HTTPS URL
+      url: file.path,
       uploadedAt: new Date()
     }));
     user.verificationDetails.documents.push(...docs);
