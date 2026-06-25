@@ -36,11 +36,16 @@ const docStorage = new CloudinaryStorage({
   cloudinary,
   params: async (req, file) => {
     const isPdf = file.mimetype === 'application/pdf';
+    // Sanitize filename and keep the original extension so the Cloudinary URL
+    // ends in .pdf — without this, raw files get a bare public_id with no extension
+    // and browsers cannot determine the file type.
+    const safeName = file.originalname.replace(/\s/g, '_').replace(/[^a-zA-Z0-9._-]/g, '');
     return {
       folder: 'freshlync/documents',
       resource_type: isPdf ? 'raw' : 'image',
       type: 'upload',           // explicit public upload (not authenticated)
       access_mode: 'public',    // ensure publicly accessible URL
+      public_id: `${Date.now()}-${safeName}`, // preserves .pdf extension in URL
       allowed_formats: isPdf ? ['pdf'] : ['jpg', 'jpeg', 'png', 'webp'],
     };
   },
