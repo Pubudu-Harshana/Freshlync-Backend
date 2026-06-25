@@ -29,12 +29,20 @@ const avatarStorage = new CloudinaryStorage({
 });
 
 // Storage for business verification documents (PDFs allowed)
+// Use a params function so we can set resource_type per file:
+//   - PDFs → resource_type: 'raw' with explicit public delivery type
+//   - Images → resource_type: 'image'
 const docStorage = new CloudinaryStorage({
   cloudinary,
-  params: {
-    folder: 'freshlync/documents',
-    allowed_formats: ['jpg', 'jpeg', 'png', 'webp', 'pdf'],
-    resource_type: 'auto',
+  params: async (req, file) => {
+    const isPdf = file.mimetype === 'application/pdf';
+    return {
+      folder: 'freshlync/documents',
+      resource_type: isPdf ? 'raw' : 'image',
+      type: 'upload',           // explicit public upload (not authenticated)
+      access_mode: 'public',    // ensure publicly accessible URL
+      allowed_formats: isPdf ? ['pdf'] : ['jpg', 'jpeg', 'png', 'webp'],
+    };
   },
 });
 
