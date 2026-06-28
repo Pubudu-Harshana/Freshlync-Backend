@@ -28,9 +28,20 @@ const app = express();
 // Security: HTTP headers
 app.use(helmet());
 
-// CORS — allow frontend dev server
+// CORS — allow frontend origins
+const allowedOrigins = ['http://localhost:5173'];
+if (process.env.CLIENT_URL) {
+  process.env.CLIENT_URL.split(',').forEach(url => allowedOrigins.push(url.trim()));
+}
+
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
 }));
 
