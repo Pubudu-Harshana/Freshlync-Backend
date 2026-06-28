@@ -300,3 +300,54 @@ exports.resetPassword = async (req, res) => {
 
   res.json({ message: 'Password reset successful. You can now log in with your new password.' });
 };
+
+// POST /api/auth/google
+exports.googleLogin = async (req, res) => {
+  const { accessToken, role } = req.body;
+
+  if (!accessToken) {
+    return res.status(400).json({ message: 'Access token is required.' });
+  }
+
+  try {
+    const response = await fetch(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${accessToken}`);
+    if (!response.ok) {
+      return res.status(401).json({ message: 'Invalid Google access token.' });
+    }
+    const payload = await response.json();
+    const { email, name, picture } = payload;
+
+    if (!email) {
+      return res.status(400).json({ message: 'Google account does not provide email access.' });
+    }
+
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      const randomPassword = crypto.randomBytes(16).toString('hex');
+      const assignedRole = ['buyer', 'supplier'].includes(role) ? role : 'buyer';
+      user = await User.create({
+        name,
+        email,
+        password: randomPassword,
+        role: assignedRole,
+        avatar: picture || '',
+        verificationStatus: assignedRole === 'supplier' ? 'pending' : 'unverified',
+        isVerified: false
+      });
+    }
+
+    const token = signToken(user._id);
+    const userResponse = user.toObject();
+    delete userResponse.password;
+
+    res.json({
+      token,
+      user: userResponse,
+    });
+  } catch (error) {
+    console.error('Google login error:', error);
+    res.status(500).json({ message: 'Internal server error during Google login.' });
+  }
+};
+
