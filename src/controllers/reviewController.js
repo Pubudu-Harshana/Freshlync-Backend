@@ -1,11 +1,23 @@
 const Review = require('../models/Review');
 const Order = require('../models/Order');
+const Product = require('../models/Product');
 const Notification = require('../models/Notification');
 const User = require('../models/User');
 
-// Create a review
+// Helper: recalculate a product's rating and review count from approved reviews
+async function recalculateProductRating(productId) {
+  if (!productId) return;
+  const approved = await Review.find({ productId, status: 'approved' });
+  const count = approved.length;
+  const avg = count > 0
+    ? Number((approved.reduce((sum, r) => sum + r.rating, 0) / count).toFixed(1))
+    : 0;
+  await Product.findByIdAndUpdate(productId, { rating: avg, reviews: count });
+}
+
+// Create a review (supports both order-level and product-level reviews)
 exports.createReview = async (req, res) => {
-  const { rating, title, review, orderId, companyName, profileImage } = req.body;
+  const { rating, title, review, orderId, productId, companyName, profileImage } = req.body;
   const userId = req.user._id;
 
   // Validate rating
@@ -19,16 +31,31 @@ exports.createReview = async (req, res) => {
   }
 
   // Check if order belongs to user and is delivered (completed)
-  // Or at least just check if order exists for this user
   const order = await Order.findOne({ _id: orderId, buyer: userId, status: 'Delivered' });
   if (!order) {
     return res.status(400).json({ message: 'Review must be linked to a completed (Delivered) order.' });
   }
 
-  // Check if user already reviewed this order
-  const existingReview = await Review.findOne({ userId, orderId });
-  if (existingReview) {
-    return res.status(400).json({ message: 'You have already submitted a review for this order.' });
+  // If product review, validate product exists in the order
+  if (productId) {
+    const productInOrder = order.items.some(
+      item => item.product && item.product.toString() === productId.toString()
+    );
+    if (!productInOrder) {
+      return res.status(400).json({ message: 'This product was not part of your order.' });
+    }
+
+    // Check duplicate: one review per user per product
+    const existingProductReview = await Review.findOne({ userId, productId });
+    if (existingProductReview) {
+      return res.status(400).json({ message: 'You have already reviewed this product.' });
+    }
+  } else {
+    // Order-level review: check duplicate per order
+    const existingReview = await Review.findOne({ userId, orderId, productId: null });
+    if (existingReview) {
+      return res.status(400).json({ message: 'You have already submitted a review for this order.' });
+    }
   }
 
   const newReview = await Review.create({
@@ -41,15 +68,19 @@ exports.createReview = async (req, res) => {
     title,
     review,
     orderId,
+    productId: productId || null,
     status: 'pending'
   });
 
   // Notify admins
   const admins = await User.find({ role: 'admin' });
+  const productName = productId
+    ? (await Product.findById(productId))?.name || 'a product'
+    : 'an order';
   const adminNotifications = admins.map(admin => ({
     user: admin._id,
     title: 'New Review Submitted',
-    message: `${req.user.name} submitted a new review.`,
+    message: `${req.user.name} submitted a review for ${productName}.`,
     type: 'system'
   }));
   if (adminNotifications.length > 0) {
@@ -123,6 +154,11 @@ exports.updateReviewStatus = async (req, res) => {
   if (featured !== undefined) review.featured = featured;
 
   await review.save();
+
+  // Recalculate product rating if this is a product review and status changed
+  if (review.productId && status && status !== oldStatus) {
+    await recalculateProductRating(review.productId);
+  }
 
   // Notify user if status changed to approved or rejected
   if (status && status !== oldStatus && (status === 'approved' || status === 'rejected')) {
@@ -202,4 +238,46 @@ exports.getAdminReviewStats = async (req, res) => {
     averageRating: parseFloat(averageRating),
     activeUsers: userAggregation
   });
+};
+
+// ── Product-wise review endpoints ─────────────────────────────────────────────
+
+// Get approved reviews for a specific product (Public)
+exports.getProductReviews = async (req, res) => {
+  const { productId } = req.params;
+  const limit = parseInt(req.query.limit, 10) || 10;
+  const page = parseInt(req.query.page, 10) || 1;
+
+  const query = { productId, status: 'approved' };
+
+  const reviews = await Review.find(query)
+    .sort({ createdAt: -1 })
+    .skip((page - 1) * limit)
+    .limit(limit);
+
+  const total = await Review.countDocuments(query);
+
+  res.json({
+    reviews,
+    page,
+    pages: Math.ceil(total / limit),
+    total
+  });
+};
+
+// Get star-distribution stats for a specific product (Public)
+exports.getProductReviewStats = async (req, res) => {
+  const { productId } = req.params;
+
+  const approved = await Review.find({ productId, status: 'approved' });
+  const total = approved.length;
+  const average = total > 0
+    ? Number((approved.reduce((s, r) => s + r.rating, 0) / total).toFixed(1))
+    : 0;
+
+  // Star distribution: { 5: count, 4: count, ... 1: count }
+  const distribution = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+  approved.forEach(r => { distribution[r.rating] = (distribution[r.rating] || 0) + 1; });
+
+  res.json({ total, average, distribution });
 };

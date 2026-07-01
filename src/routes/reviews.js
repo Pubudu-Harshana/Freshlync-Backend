@@ -8,12 +8,16 @@ const {
   updateReviewStatus,
   deleteReview,
   getReviewStats,
-  getAdminReviewStats
+  getAdminReviewStats,
+  getProductReviews,
+  getProductReviewStats
 } = require('../controllers/reviewController');
 
 // Public routes
 router.get('/public', getPublicReviews);
 router.get('/stats', getReviewStats);
+router.get('/product/:productId', getProductReviews);
+router.get('/product/:productId/stats', getProductReviewStats);
 
 // Protected routes (User)
 router.post('/create', protect, createReview);
@@ -25,3 +29,4 @@ router.put('/admin/status/:id', protect, requireRole('admin'), updateReviewStatu
 router.delete('/admin/:id', protect, requireRole('admin'), deleteReview);
 
 module.exports = router;
+
