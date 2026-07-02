@@ -11,7 +11,7 @@ const Review = require('../models/Review');
  */
 async function getPlatformReviews() {
   // Query all approved reviews
-  const approvedReviews = await Review.find({ status: 'approved' }).lean();
+  const approvedReviews = await Review.find({ status: 'approved', productId: null }).lean();
 
   let averageRating = 5.0; // Default fallback if no reviews exist
   if (approvedReviews.length > 0) {
@@ -20,7 +20,7 @@ async function getPlatformReviews() {
   }
 
   // Fetch latest 3 approved reviews to display
-  const latestReviews = await Review.find({ status: 'approved' })
+  const latestReviews = await Review.find({ status: 'approved', productId: null })
     .sort({ createdAt: -1 })
     .limit(3)
     .lean();

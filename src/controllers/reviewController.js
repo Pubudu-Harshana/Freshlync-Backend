@@ -95,7 +95,7 @@ exports.getPublicReviews = async (req, res) => {
   const limit = parseInt(req.query.limit, 10) || 10;
   const page = parseInt(req.query.page, 10) || 1;
 
-  const query = { status: 'approved' };
+  const query = { status: 'approved', productId: null };
   
   const reviews = await Review.find(query)
     .sort({ featured: -1, createdAt: -1 })
@@ -187,7 +187,7 @@ exports.deleteReview = async (req, res) => {
 
 // Get review statistics (Approved only)
 exports.getReviewStats = async (req, res) => {
-  const approvedReviews = await Review.find({ status: 'approved' });
+  const approvedReviews = await Review.find({ status: 'approved', productId: null });
   
   const totalReviews = approvedReviews.length;
   const averageRating = totalReviews > 0 
