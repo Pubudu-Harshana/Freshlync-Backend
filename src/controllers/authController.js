@@ -354,6 +354,15 @@ exports.googleLogin = async (req, res) => {
         verificationStatus: 'unverified',
         isVerified: false
       });
+
+      if (assignedRole === 'supplier') {
+        try {
+          const { sendSupplierRegistrationAdminEmail } = require('../utils/sendAdminNotification');
+          await sendSupplierRegistrationAdminEmail(user);
+        } catch (err) {
+          console.error('Failed to send admin alert on supplier registration:', err.message);
+        }
+      }
     }
 
     const token = signToken(user._id);
