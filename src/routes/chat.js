@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const { protect } = require('../middleware/auth');
+const { optionalProtect } = require('../middleware/auth');
 const { chat } = require('../controllers/chatController');
 
-// POST /api/chat  — authenticated users only
-router.post('/', protect, chat);
+// POST /api/chat  — authenticated/guest users
+router.post('/', optionalProtect, chat);
 
 module.exports = router;

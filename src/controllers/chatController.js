@@ -20,11 +20,14 @@ async function generateGeminiResponse(userMessage, intent, dbData, user) {
     return null;
   }
 
+  const role = user ? user.role : 'guest';
+  const name = user ? (user.name || 'User') : 'Guest';
+
   try {
     const prompt = `
 You are the FreshLync B2B Assistant, an intelligent chatbot for FreshLync, a food distribution and logistics platform.
-The user role is: ${user.role}.
-The user name is: ${user.name || 'User'}.
+The user role is: ${role}.
+The user name is: ${name}.
 The user's message is: "${userMessage}"
 We detected intent: "${intent}"
 
@@ -67,6 +70,15 @@ exports.chat = async (req, res) => {
     // 2. Route to appropriate database service based on intent
     switch (intent) {
       case intentService.INTENTS.ORDER_STATUS:
+        if (!user) {
+          responseType = 'order_status';
+          responseData = {
+            orderFound: false,
+            error: 'Please log in to track your orders.',
+            text: 'To track your orders, please sign in to your FreshLync account.'
+          };
+          break;
+        }
         if (params.orderId) {
           try {
             const orderDetails = await orderService.getOrderDetails(params.orderId, user._id, user.role);
@@ -178,6 +190,15 @@ exports.chat = async (req, res) => {
         break;
 
       case intentService.INTENTS.NOTIFICATIONS:
+        if (!user) {
+          responseType = 'notifications';
+          responseData = {
+            unreadCount: 0,
+            notifications: [],
+            text: 'Please log in to view your recent notifications.'
+          };
+          break;
+        }
         const notificationsData = await notificationService.getRecentNotifications(user._id);
         responseType = 'notifications';
         responseData = notificationsData;
@@ -196,9 +217,9 @@ exports.chat = async (req, res) => {
       case intentService.INTENTS.GENERAL_HELP:
         responseType = 'general_help';
         responseData = {
-          userName: user.name || 'Trader'
+          userName: user ? (user.name || 'Trader') : 'Guest'
         };
-        const geminiTextHelp = await generateGeminiResponse(message, intent, { userName: user.name || 'Trader' }, user);
+        const geminiTextHelp = await generateGeminiResponse(message, intent, { userName: responseData.userName }, user);
         if (geminiTextHelp) responseData.text = geminiTextHelp;
         break;
 
