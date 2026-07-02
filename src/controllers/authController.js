@@ -22,7 +22,7 @@ exports.register = async (req, res) => {
     password,
     role: assignedRole,
     company,
-    verificationStatus: assignedRole === 'supplier' ? 'pending' : 'unverified'
+    verificationStatus: 'unverified'
   });
   const token = signToken(user._id);
 
@@ -338,9 +338,11 @@ exports.googleLogin = async (req, res) => {
       return res.status(400).json({ message: 'Google account does not provide email access.' });
     }
 
+    let isNewUser = false;
     let user = await User.findOne({ email });
 
     if (!user) {
+      isNewUser = true;
       const randomPassword = crypto.randomBytes(16).toString('hex');
       const assignedRole = ['buyer', 'supplier'].includes(role) ? role : 'buyer';
       user = await User.create({
@@ -349,7 +351,7 @@ exports.googleLogin = async (req, res) => {
         password: randomPassword,
         role: assignedRole,
         avatar: picture || '',
-        verificationStatus: assignedRole === 'supplier' ? 'pending' : 'unverified',
+        verificationStatus: 'unverified',
         isVerified: false
       });
     }
@@ -361,6 +363,7 @@ exports.googleLogin = async (req, res) => {
     res.json({
       token,
       user: userResponse,
+      isNewUser
     });
   } catch (error) {
     console.error('Google login error:', error);
