@@ -26,7 +26,11 @@ const generateActionToken = (userId, action) => {
  */
 const sendSupplierRegistrationAdminEmail = async (supplier) => {
   const admins = await User.find({ role: 'admin' }).select('email');
-  if (!admins || admins.length === 0) return;
+  const emails = admins.map(a => a.email);
+  if (process.env.EMAIL_USER && !emails.includes(process.env.EMAIL_USER)) {
+    emails.push(process.env.EMAIL_USER);
+  }
+  if (emails.length === 0) return;
 
   const clientUrl = process.env.CLIENT_URL || 'http://localhost:5173';
   const backendUrl = process.env.VITE_API_URL 
@@ -129,16 +133,16 @@ const sendSupplierRegistrationAdminEmail = async (supplier) => {
     </html>
   `;
 
-  for (const admin of admins) {
+  for (const email of emails) {
     try {
       await transporter.sendMail({
         from: `"FreshLync" <${process.env.EMAIL_USER}>`,
-        to: admin.email,
+        to: email,
         subject: `[ALERT] New Supplier Registration: ${supplier.company || supplier.name}`,
         html,
       });
     } catch (err) {
-      console.error(`Failed to send supplier registration email to ${admin.email}:`, err.message);
+      console.error(`Failed to send supplier registration email to ${email}:`, err.message);
     }
   }
 };
@@ -148,7 +152,11 @@ const sendSupplierRegistrationAdminEmail = async (supplier) => {
  */
 const sendSupplierVerificationAdminEmail = async (supplier) => {
   const admins = await User.find({ role: 'admin' }).select('email');
-  if (!admins || admins.length === 0) return;
+  const emails = admins.map(a => a.email);
+  if (process.env.EMAIL_USER && !emails.includes(process.env.EMAIL_USER)) {
+    emails.push(process.env.EMAIL_USER);
+  }
+  if (emails.length === 0) return;
 
   const clientUrl = process.env.CLIENT_URL || 'http://localhost:5173';
   const backendUrl = process.env.VITE_API_URL 
@@ -255,16 +263,16 @@ const sendSupplierVerificationAdminEmail = async (supplier) => {
     </html>
   `;
 
-  for (const admin of admins) {
+  for (const email of emails) {
     try {
       await transporter.sendMail({
         from: `"FreshLync" <${process.env.EMAIL_USER}>`,
-        to: admin.email,
+        to: email,
         subject: `[ALERT] Verification Docs Submitted: ${supplier.company || supplier.name}`,
         html,
       });
     } catch (err) {
-      console.error(`Failed to send supplier verification email to ${admin.email}:`, err.message);
+      console.error(`Failed to send supplier verification email to ${email}:`, err.message);
     }
   }
 };
