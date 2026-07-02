@@ -29,6 +29,15 @@ exports.register = async (req, res) => {
   const userResponse = user.toObject();
   delete userResponse.password;
 
+  if (assignedRole === 'supplier') {
+    try {
+      const { sendSupplierRegistrationAdminEmail } = require('../utils/sendAdminNotification');
+      await sendSupplierRegistrationAdminEmail(user);
+    } catch (err) {
+      console.error('Failed to send admin alert on supplier registration:', err.message);
+    }
+  }
+
   res.status(201).json({
     token,
     user: userResponse,
@@ -236,6 +245,14 @@ exports.submitBusinessVerification = async (req, res) => {
     await Notification.insertMany(adminNotifs);
   }
 
+  // Trigger admin email alert
+  try {
+    const { sendSupplierVerificationAdminEmail } = require('../utils/sendAdminNotification');
+    await sendSupplierVerificationAdminEmail(user);
+  } catch (err) {
+    console.error('Failed to send admin email alert on document submit:', err.message);
+  }
+
   res.json(user);
 };
 
@@ -348,6 +365,123 @@ exports.googleLogin = async (req, res) => {
   } catch (error) {
     console.error('Google login error:', error);
     res.status(500).json({ message: 'Internal server error during Google login.' });
+  }
+};
+
+// GET /api/auth/quick-action
+exports.quickActionApproval = async (req, res) => {
+  const { token } = req.query;
+  const clientUrl = process.env.CLIENT_URL || 'http://localhost:5173';
+
+  const renderPage = (success, title, message) => {
+    return `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>FreshLync Admin Quick Action</title>
+        <style>
+          body { background: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; padding: 20px; box-sizing: border-box; }
+          .card { background: white; border-radius: 16px; padding: 2.5rem; max-width: 440px; width: 100%; box-shadow: 0 10px 30px rgba(15,23,42,0.06); border: 1px solid #e2e8f0; text-align: center; }
+          .icon { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 24px; font-weight: bold; }
+          .icon-success { background: #dcfce7; color: #15803d; }
+          .icon-error { background: #fee2e2; color: #b91c1c; }
+          h1 { font-size: 1.35rem; font-weight: 800; margin: 0 0 0.5rem; color: #0f172a; }
+          p { font-size: 0.92rem; color: #475569; line-height: 1.5; margin: 0 0 1.75rem; }
+          .btn { display: block; text-decoration: none; font-weight: 700; font-size: 0.9rem; padding: 0.75rem; border-radius: 8px; text-align: center; background: #047857; color: white; border: none; cursor: pointer; transition: opacity 0.2s; }
+          .btn:hover { opacity: 0.9; }
+        </style>
+      </head>
+      <body>
+        <div class="card">
+          <div class="icon ${success ? 'icon-success' : 'icon-error'}">
+            ${success ? '✓' : '✗'}
+          </div>
+          <h1>${title}</h1>
+          <p>${message}</p>
+          <a href="${clientUrl}/admin" class="btn">Go to Admin Dashboard</a>
+        </div>
+      </body>
+      </html>
+    `;
+  };
+
+  if (!token) {
+    return res.status(400).send(renderPage(false, 'Missing Token', 'Quick action token is missing from the link URL.'));
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const { userId, action } = decoded;
+
+    if (!['approve', 'reject'].includes(action)) {
+      return res.status(400).send(renderPage(false, 'Invalid Action', 'This link contains an unrecognized verification action.'));
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).send(renderPage(false, 'User Not Found', 'The supplier account associated with this token could not be found.'));
+    }
+
+    // Check if user is already verified/rejected
+    if (action === 'approve' && user.verificationStatus === 'approved') {
+      return res.send(renderPage(true, 'Already Approved', `Supplier "${user.company || user.name}" has already been verified and approved.`));
+    }
+    if (action === 'reject' && user.verificationStatus === 'rejected') {
+      return res.send(renderPage(true, 'Already Rejected', `Supplier "${user.company || user.name}" registration has already been rejected.`));
+    }
+
+    // Apply verification status updates
+    const targetStatus = action === 'approve' ? 'approved' : 'rejected';
+    user.verificationStatus = targetStatus;
+    user.isVerified = action === 'approve';
+
+    user.verificationHistory.push({
+      status: targetStatus,
+      notes: `Action processed via Admin Lock Screen Email link.`,
+      updatedByName: 'Admin Quick-Action System',
+      updatedAt: new Date()
+    });
+
+    await user.save();
+
+    // Create a persistent in-app notification in DB for the supplier
+    const Notification = require('../models/Notification');
+    let title = '';
+    let message = '';
+    if (action === 'approve') {
+      title = 'Verification Approved';
+      message = 'Your business verification has been approved. You can now publish products and receive orders.';
+    } else {
+      title = 'Verification Rejected';
+      message = 'Your business verification request was rejected. Please update your details and resubmit.';
+    }
+
+    await Notification.create({
+      user: user._id,
+      title,
+      message,
+      type: 'system'
+    });
+
+    const statusWord = action === 'approve' ? 'approved' : 'rejected';
+    res.send(renderPage(
+      true, 
+      `Account ${action === 'approve' ? 'Approved' : 'Rejected'}`, 
+      `Supplier "${user.company || user.name}" was successfully ${statusWord} and notified.`
+    ));
+
+  } catch (err) {
+    console.error('Quick action verify error:', err.message);
+    const expired = err.name === 'TokenExpiredError';
+    return res.status(401).send(renderPage(
+      false, 
+      expired ? 'Link Expired' : 'Verification Failed', 
+      expired 
+        ? 'This verification link has expired (valid for 24 hours). Please log in to the admin panel to verify.' 
+        : 'The verification signature is invalid or has been corrupted.'
+    ));
   }
 };
 
