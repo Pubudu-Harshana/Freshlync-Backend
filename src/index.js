@@ -1,5 +1,8 @@
 require('dotenv').config();
 require('express-async-errors');
+const dns = require('dns');
+dns.setDefaultResultOrder('ipv4first');
+
 const express       = require('express');
 const cors          = require('cors');
 const path          = require('path');
@@ -24,6 +27,7 @@ const billingRoutes   = require('./routes/billing');
 connectDB();
 
 const app = express();
+app.set('trust proxy', 1);
 
 // Security: HTTP headers
 app.use(helmet());
