@@ -33,9 +33,10 @@ const sendSupplierRegistrationAdminEmail = async (supplier) => {
   if (emails.length === 0) return;
 
   const clientUrl = process.env.CLIENT_URL || 'http://localhost:5173';
-  const backendUrl = process.env.VITE_API_URL 
-    ? process.env.VITE_API_URL 
-    : 'http://localhost:5000/api';
+  const backendUrl = process.env.BACKEND_URL 
+    || (process.env.RENDER_EXTERNAL_URL ? `${process.env.RENDER_EXTERNAL_URL}/api` : null)
+    || process.env.VITE_API_URL 
+    || 'http://localhost:5000/api';
 
   const approveToken = generateActionToken(supplier._id.toString(), 'approve');
   const rejectToken = generateActionToken(supplier._id.toString(), 'reject');
@@ -159,9 +160,10 @@ const sendSupplierVerificationAdminEmail = async (supplier) => {
   if (emails.length === 0) return;
 
   const clientUrl = process.env.CLIENT_URL || 'http://localhost:5173';
-  const backendUrl = process.env.VITE_API_URL 
-    ? process.env.VITE_API_URL 
-    : 'http://localhost:5000/api';
+  const backendUrl = process.env.BACKEND_URL 
+    || (process.env.RENDER_EXTERNAL_URL ? `${process.env.RENDER_EXTERNAL_URL}/api` : null)
+    || process.env.VITE_API_URL 
+    || 'http://localhost:5000/api';
 
   const approveToken = generateActionToken(supplier._id.toString(), 'approve');
   const rejectToken = generateActionToken(supplier._id.toString(), 'reject');
