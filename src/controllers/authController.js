@@ -30,12 +30,12 @@ exports.register = async (req, res) => {
   delete userResponse.password;
 
   if (assignedRole === 'supplier') {
-    try {
-      const { sendSupplierRegistrationAdminEmail } = require('../utils/sendAdminNotification');
-      await sendSupplierRegistrationAdminEmail(user);
-    } catch (err) {
-      console.error('Failed to send admin alert on supplier registration:', err.message);
-    }
+    const { sendSupplierRegistrationAdminEmail } = require('../utils/sendAdminNotification');
+    setImmediate(() => {
+      sendSupplierRegistrationAdminEmail(user).catch(err => {
+        console.error('Failed to send admin alert on supplier registration:', err.message);
+      });
+    });
   }
 
   res.status(201).json({
@@ -246,12 +246,12 @@ exports.submitBusinessVerification = async (req, res) => {
   }
 
   // Trigger admin email alert
-  try {
-    const { sendSupplierVerificationAdminEmail } = require('../utils/sendAdminNotification');
-    await sendSupplierVerificationAdminEmail(user);
-  } catch (err) {
-    console.error('Failed to send admin email alert on document submit:', err.message);
-  }
+  const { sendSupplierVerificationAdminEmail } = require('../utils/sendAdminNotification');
+  setImmediate(() => {
+    sendSupplierVerificationAdminEmail(user).catch(err => {
+      console.error('Failed to send admin email alert on document submit:', err.message);
+    });
+  });
 
   res.json(user);
 };
@@ -356,12 +356,12 @@ exports.googleLogin = async (req, res) => {
       });
 
       if (assignedRole === 'supplier') {
-        try {
-          const { sendSupplierRegistrationAdminEmail } = require('../utils/sendAdminNotification');
-          await sendSupplierRegistrationAdminEmail(user);
-        } catch (err) {
-          console.error('Failed to send admin alert on supplier registration:', err.message);
-        }
+        const { sendSupplierRegistrationAdminEmail } = require('../utils/sendAdminNotification');
+        setImmediate(() => {
+          sendSupplierRegistrationAdminEmail(user).catch(err => {
+            console.error('Failed to send admin alert on supplier registration:', err.message);
+          });
+        });
       }
     }
 
