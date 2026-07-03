@@ -11,6 +11,61 @@ const transporter = nodemailer.createTransport({
   family: 4,
 });
 
+const sendEmailHelper = async ({ to, subject, html }) => {
+  const recipients = Array.isArray(to) ? to : [to];
+  
+  if (process.env.RESEND_API_KEY) {
+    // Resend sandbox restriction: can only send to the account owner (pubuduharshana222@gmail.com)
+    const allowedRecipients = recipients.filter(
+      email => email.toLowerCase() === 'pubuduharshana222@gmail.com'
+    );
+    
+    if (allowedRecipients.length === 0) {
+      console.log('Skipping Resend email sending: no verified recipients.');
+      return;
+    }
+
+    try {
+      console.log('Sending email via Resend API to:', allowedRecipients);
+      const response = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
+        },
+        body: JSON.stringify({
+          from: 'FreshLync <onboarding@resend.dev>',
+          to: allowedRecipients,
+          subject,
+          html,
+        }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to send via Resend API');
+      }
+      return data;
+    } catch (err) {
+      console.error('Resend API error:', err.message);
+      throw err;
+    }
+  } else {
+    // Fallback to Nodemailer SMTP
+    for (const email of recipients) {
+      try {
+        await transporter.sendMail({
+          from: `"FreshLync" <${process.env.EMAIL_USER}>`,
+          to: email,
+          subject,
+          html,
+        });
+      } catch (err) {
+        console.error(`Failed to send email to ${email}:`, err.message);
+      }
+    }
+  }
+};
+
 /**
  * Generate a cryptographically secure token for approval actions.
  */
@@ -135,17 +190,14 @@ const sendSupplierRegistrationAdminEmail = async (supplier) => {
     </html>
   `;
 
-  for (const email of emails) {
-    try {
-      await transporter.sendMail({
-        from: `"FreshLync" <${process.env.EMAIL_USER}>`,
-        to: email,
-        subject: `[ALERT] New Supplier Registration: ${supplier.company || supplier.name}`,
-        html,
-      });
-    } catch (err) {
-      console.error(`Failed to send supplier registration email to ${email}:`, err.message);
-    }
+  try {
+    await sendEmailHelper({
+      to: emails,
+      subject: `[ALERT] New Supplier Registration: ${supplier.company || supplier.name}`,
+      html,
+    });
+  } catch (err) {
+    console.error('Failed to send supplier registration email:', err.message);
   }
 };
 
@@ -266,17 +318,14 @@ const sendSupplierVerificationAdminEmail = async (supplier) => {
     </html>
   `;
 
-  for (const email of emails) {
-    try {
-      await transporter.sendMail({
-        from: `"FreshLync" <${process.env.EMAIL_USER}>`,
-        to: email,
-        subject: `[ALERT] Verification Docs Submitted: ${supplier.company || supplier.name}`,
-        html,
-      });
-    } catch (err) {
-      console.error(`Failed to send supplier verification email to ${email}:`, err.message);
-    }
+  try {
+    await sendEmailHelper({
+      to: emails,
+      subject: `[ALERT] Verification Docs Submitted: ${supplier.company || supplier.name}`,
+      html,
+    });
+  } catch (err) {
+    console.error('Failed to send supplier verification email:', err.message);
   }
 };
 
