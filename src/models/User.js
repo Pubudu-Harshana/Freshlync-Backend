@@ -1,13 +1,24 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
+const phoneValidator = {
+  validator: function(v) {
+    if (!v) return true; // Allow empty string (optional field)
+    const regex = /^\+?[0-9\s\-()]+$/;
+    if (!regex.test(v)) return false;
+    const digits = v.replace(/\D/g, '');
+    return digits.length >= 7 && digits.length <= 15;
+  },
+  message: props => `${props.value} is not a valid phone number! Must contain between 7 and 15 digits.`
+};
+
 const userSchema = new mongoose.Schema({
   name:     { type: String, required: true, trim: true },
   email:    { type: String, required: true, unique: true, lowercase: true, trim: true },
   password: { type: String, required: true, minlength: 6 },
   role:     { type: String, enum: ['buyer', 'supplier', 'admin'], default: 'buyer' },
   company:  { type: String, default: '' },
-  phone:    { type: String, default: '' },
+  phone:    { type: String, default: '', validate: phoneValidator },
   avatar:   { type: String, default: '' },
   address:  { type: String, default: '' },
   website:  { type: String, default: '' },
@@ -30,12 +41,12 @@ const userSchema = new mongoose.Schema({
     businessType: { type: String, default: '' },
     taxId: { type: String, default: '' },
     businessAddress: { type: String, default: '' },
-    businessPhone: { type: String, default: '' },
+    businessPhone: { type: String, default: '', validate: phoneValidator },
     businessEmail: { type: String, default: '' },
     contactName: { type: String, default: '' },
     contactJobTitle: { type: String, default: '' },
     contactEmail: { type: String, default: '' },
-    contactPhone: { type: String, default: '' },
+    contactPhone: { type: String, default: '', validate: phoneValidator },
     documents: [{
       name: String,
       fieldName: String,
