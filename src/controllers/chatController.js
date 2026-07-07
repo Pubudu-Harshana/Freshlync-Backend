@@ -120,7 +120,7 @@ exports.chat = async (req, res) => {
 
       case intentService.INTENTS.PRODUCT_PRICE:
         if (params.productName) {
-          const priceInfo = await productService.getProductInfo(params.productName);
+          const priceInfo = await productService.getProductInfo(params.productName, user?.role);
           responseType = 'product_info';
           responseData = {
             queryType: 'price',
@@ -131,7 +131,7 @@ exports.chat = async (req, res) => {
           if (geminiText) responseData.text = geminiText;
         } else {
           // Fallback if no specific product was extracted
-          const fallbackProducts = await productService.searchFallback(message);
+          const fallbackProducts = await productService.searchFallback(message, user?.role);
           responseType = 'fallback';
           responseData = {
             message: "I couldn't identify the product you're asking about. Here are some of our available products:",
@@ -144,7 +144,7 @@ exports.chat = async (req, res) => {
 
       case intentService.INTENTS.PRODUCT_STOCK:
         if (params.productName) {
-          const stockInfo = await productService.getProductInfo(params.productName);
+          const stockInfo = await productService.getProductInfo(params.productName, user?.role);
           responseType = 'product_info';
           responseData = {
             queryType: 'stock',
@@ -155,7 +155,7 @@ exports.chat = async (req, res) => {
           if (geminiText) responseData.text = geminiText;
         } else {
           // Fallback if no specific product was extracted
-          const fallbackProducts = await productService.searchFallback(message);
+          const fallbackProducts = await productService.searchFallback(message, user?.role);
           responseType = 'fallback';
           responseData = {
             message: "I couldn't identify the product you're asking about. Here are some of our available products:",
@@ -168,7 +168,7 @@ exports.chat = async (req, res) => {
 
       case intentService.INTENTS.CATEGORY_SEARCH:
         if (params.category) {
-          const categoryProducts = await productService.getCategoryProducts(params.category);
+          const categoryProducts = await productService.getCategoryProducts(params.category, user?.role);
           responseType = 'category_search';
           responseData = {
             category: params.category,
@@ -178,7 +178,7 @@ exports.chat = async (req, res) => {
           if (geminiText) responseData.text = geminiText;
         } else {
           // Fallback if no category extracted
-          const fallbackProducts = await productService.searchFallback(message);
+          const fallbackProducts = await productService.searchFallback(message, user?.role);
           responseType = 'fallback';
           responseData = {
             message: "Here are some of our available products:",
@@ -226,7 +226,7 @@ exports.chat = async (req, res) => {
       case intentService.INTENTS.FALLBACK_SEARCH:
       default:
         // Smart fallback recovery: perform database text search over query terms
-        const fallbackProducts = await productService.searchFallback(message);
+        const fallbackProducts = await productService.searchFallback(message, user?.role);
         responseType = 'fallback';
         responseData = {
           message: "I couldn't find a direct match for your request. Here are some products you might be looking for:",

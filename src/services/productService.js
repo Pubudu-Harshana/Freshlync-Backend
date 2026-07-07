@@ -5,12 +5,19 @@
 
 const Product = require('../models/Product');
 
+// Helper to determine the display price depending on requestor role
+const getPrice = (p, role) => {
+  if (!p) return 0;
+  return role === 'supplier' ? (p.basePrice || p.price) : (p.sellingPrice || p.price);
+};
+
 /**
  * Retrieves product information and handles out-of-stock or not-found alternatives.
  * @param {string} name - Product name to query
+ * @param {string} role - The requestor user role
  * @returns {object} { product, inStock, alternatives }
  */
-async function getProductInfo(name) {
+async function getProductInfo(name, role) {
   if (!name || typeof name !== 'string') {
     return { product: null, inStock: false, alternatives: [] };
   }
@@ -36,7 +43,7 @@ async function getProductInfo(name) {
     return {
       product: {
         name: product.name,
-        price: product.price,
+        price: getPrice(product, role),
         stock: product.stock,
         unit: product.unit || 'kg',
         category: product.category
@@ -56,7 +63,7 @@ async function getProductInfo(name) {
       stock: { $gt: 0 },
       _id: { $ne: product._id }
     })
-      .select('name price unit stock category')
+      .select('name price basePrice sellingPrice unit stock category')
       .limit(3)
       .lean();
     alternatives.push(...sameCategory);
@@ -71,7 +78,7 @@ async function getProductInfo(name) {
       stock: { $gt: 0 },
       _id: { $not: { $in: excludeIds } }
     })
-      .select('name price unit stock category')
+      .select('name price basePrice sellingPrice unit stock category')
       .sort({ price: 1 }) // cheapest first
       .limit(limit)
       .lean();
@@ -81,7 +88,7 @@ async function getProductInfo(name) {
   return {
     product: product ? {
       name: product.name,
-      price: product.price,
+      price: getPrice(product, role),
       stock: 0,
       unit: product.unit || 'kg',
       category: product.category
@@ -89,7 +96,7 @@ async function getProductInfo(name) {
     inStock: false,
     alternatives: alternatives.map(p => ({
       name: p.name,
-      price: p.price,
+      price: getPrice(p, role),
       stock: p.stock,
       unit: p.unit || 'kg',
       category: p.category
@@ -100,9 +107,10 @@ async function getProductInfo(name) {
 /**
  * Retrieves in-stock products under a specific category.
  * @param {string} categoryName 
+ * @param {string} role - The requestor user role
  * @returns {array} list of products
  */
-async function getCategoryProducts(categoryName) {
+async function getCategoryProducts(categoryName, role) {
   if (!categoryName) return [];
 
   // Map keywords to official categories in DB if needed
@@ -121,14 +129,14 @@ async function getCategoryProducts(categoryName) {
     ],
     stock: { $gt: 0 }
   })
-    .select('name price unit stock category')
+    .select('name price basePrice sellingPrice unit stock category')
     .sort({ price: 1 })
     .limit(10)
     .lean();
 
   return products.map(p => ({
     name: p.name,
-    price: p.price,
+    price: getPrice(p, role),
     stock: p.stock,
     unit: p.unit || 'kg',
     category: p.category
@@ -138,9 +146,10 @@ async function getCategoryProducts(categoryName) {
 /**
  * Smart fallback search for products matching search terms.
  * @param {string} query 
+ * @param {string} role - The requestor user role
  * @returns {array} list of 5 products
  */
-async function searchFallback(query) {
+async function searchFallback(query, role) {
   const words = query ? query.split(/\s+/).filter(w => w.length > 2) : [];
   let filter = { stock: { $gt: 0 } };
 
@@ -156,19 +165,19 @@ async function searchFallback(query) {
   }
 
   const products = await Product.find(filter)
-    .select('name price unit stock category')
+    .select('name price basePrice sellingPrice unit stock category')
     .limit(5)
     .lean();
 
   // If we found nothing, return any top 5 in-stock products
   if (products.length === 0) {
     const defaultProducts = await Product.find({ stock: { $gt: 0 } })
-      .select('name price unit stock category')
+      .select('name price basePrice sellingPrice unit stock category')
       .limit(5)
       .lean();
     return defaultProducts.map(p => ({
       name: p.name,
-      price: p.price,
+      price: getPrice(p, role),
       stock: p.stock,
       unit: p.unit || 'kg',
       category: p.category
@@ -177,7 +186,7 @@ async function searchFallback(query) {
 
   return products.map(p => ({
     name: p.name,
-    price: p.price,
+    price: getPrice(p, role),
     stock: p.stock,
     unit: p.unit || 'kg',
     category: p.category
