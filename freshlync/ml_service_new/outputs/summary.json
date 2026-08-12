@@ -1,0 +1,20 @@
+{
+  "baseline_train_rmse": 33.63,
+  "baseline_test_rmse": 35.94,
+  "default_train_rmse": 19.45,
+  "default_test_rmse": 39.62,
+  "tuned_train_rmse": 31.69,
+  "tuned_test_rmse": 36.29,
+  "best_cv_rmse": 35.1,
+  "improvement_percent": -1.0,
+  "best_params": {
+    "subsample": 0.6,
+    "reg_lambda": 1,
+    "reg_alpha": 0,
+    "n_estimators": 500,
+    "min_child_weight": 3,
+    "max_depth": 3,
+    "learning_rate": 0.01,
+    "colsample_bytree": 0.6
+  }
+}

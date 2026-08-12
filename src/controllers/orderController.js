@@ -239,8 +239,10 @@ exports.placeOrder = async (req, res) => {
     paymentSlip: paymentSlip || '',
     paymentStatus: paymentMethod === 'bank' ? 'Pending Verification' : 'Approved',
     status: paymentMethod === 'bank' ? 'Pending Payment Verification' : 'Pending',
-    supplierStatuses
+    supplierStatuses,
+    trackingBarcode: `BC-ORD-${Math.floor(100000 + Math.random() * 900000)}`
   });
+
 
   // B2B Net 30 Invoice Creation
   if (paymentMethod === 'net30') {
@@ -450,3 +452,170 @@ exports.reuploadSlip = async (req, res) => {
 
   res.json(order);
 };
+
+// POST /api/orders/scan-barcode  (scanner updates order status via barcode)
+exports.scanBarcode = async (req, res) => {
+  const { barcode } = req.body;
+  if (!barcode || !barcode.trim()) {
+    return res.status(400).json({ message: 'Barcode is required for scanning.' });
+  }
+
+  const cleanBarcode = barcode.trim().toUpperCase();
+
+  // Find order by trackingBarcode, _id, or matching suffix
+  let order = await Order.findOne({
+    $or: [
+      { trackingBarcode: cleanBarcode },
+      { trackingBarcode: `BC-${cleanBarcode}` },
+      { _id: cleanBarcode.length === 24 ? cleanBarcode : null }
+    ]
+  });
+
+  if (!order) {
+    // Search by ID substring
+    const allOrders = await Order.find();
+    order = allOrders.find(o => 
+      o._id.toString().toUpperCase().endsWith(cleanBarcode) ||
+      (o.trackingBarcode && o.trackingBarcode.toUpperCase().includes(cleanBarcode))
+    );
+  }
+
+  if (!order) {
+    return res.status(404).json({ message: `No order found matching barcode: ${cleanBarcode}` });
+  }
+
+  // Ensure barcode field is set if it was missing
+  if (!order.trackingBarcode) {
+    order.trackingBarcode = `BC-ORD-${order._id.toString().slice(-6).toUpperCase()}`;
+    await order.save();
+  }
+
+  const scannerName = req.user ? `${req.user.name} (${req.user.role})` : 'System Scanner';
+
+  if (order.status === 'Pending Payment Verification') {
+    return res.status(400).json({ 
+      message: 'Order is awaiting payment verification before shipment. Cannot scan barcode yet.',
+      order 
+    });
+  }
+
+  if (order.status === 'Pending') {
+    order.status = 'In Transit';
+    if (order.supplierStatuses) {
+      order.supplierStatuses.forEach(s => {
+        if (s.status === 'Pending') s.status = 'In Transit';
+      });
+    }
+    order.scanHistory.push({
+      status: 'In Transit',
+      scannedBy: scannerName,
+      scannedAt: new Date()
+    });
+    await order.save();
+
+    // Create Notification for buyer
+    try {
+      const Notification = require('../models/Notification');
+      await Notification.create({
+        user: order.buyer,
+        title: 'Package Dispatched',
+        message: `Order #${order._id.toString().slice(-6).toUpperCase()} scanned at dispatch. Status: IN TRANSIT 🚚`,
+        type: 'order'
+      });
+    } catch (err) {
+      console.error(err);
+    }
+
+    // WebSockets Live Broadcast
+    try {
+      const io = req.app.get('io');
+      if (io) {
+        io.emit('order_status_updated', {
+          orderId: order._id,
+          orderNumber: order._id.toString().slice(-6).toUpperCase(),
+          status: 'In Transit',
+          buyerId: order.buyer,
+          message: `🚚 Order #${order._id.toString().slice(-6).toUpperCase()} scanned at dispatch! Status: IN TRANSIT`
+        });
+      }
+    } catch (err) {
+      console.error('Socket emit error:', err);
+    }
+
+    return res.json({
+      message: `🚚 Dispatch Scan Successful! Order status updated to IN TRANSIT.`,
+      status: 'In Transit',
+      order
+    });
+  }
+
+  if (order.status === 'In Transit') {
+    order.status = 'Delivered';
+    if (order.supplierStatuses) {
+      order.supplierStatuses.forEach(s => {
+        s.status = 'Delivered';
+      });
+    }
+    order.scanHistory.push({
+      status: 'Delivered',
+      scannedBy: scannerName,
+      scannedAt: new Date()
+    });
+    await order.save();
+
+    // Create Notification for buyer
+    try {
+      const Notification = require('../models/Notification');
+      await Notification.create({
+        user: order.buyer,
+        title: 'Package Delivered',
+        message: `Order #${order._id.toString().slice(-6).toUpperCase()} scanned at destination. Status: DELIVERED 📦`,
+        type: 'order'
+      });
+    } catch (err) {
+      console.error(err);
+    }
+
+    // WebSockets Live Broadcast
+    try {
+      const io = req.app.get('io');
+      if (io) {
+        io.emit('order_status_updated', {
+          orderId: order._id,
+          orderNumber: order._id.toString().slice(-6).toUpperCase(),
+          status: 'Delivered',
+          buyerId: order.buyer,
+          message: `📦 Order #${order._id.toString().slice(-6).toUpperCase()} scanned at destination! Status: DELIVERED`
+        });
+      }
+    } catch (err) {
+      console.error('Socket emit error:', err);
+    }
+
+    return res.json({
+      message: `📦 Destination Scan Successful! Order status updated to DELIVERED.`,
+      status: 'Delivered',
+      order
+    });
+  }
+
+
+  if (order.status === 'Delivered') {
+    return res.json({
+      message: `✅ Order #${order._id.toString().slice(-6).toUpperCase()} is already DELIVERED.`,
+      status: 'Delivered',
+      order
+    });
+  }
+
+  if (order.status === 'Cancelled') {
+    return res.status(400).json({
+      message: `⚠️ Order #${order._id.toString().slice(-6).toUpperCase()} has been CANCELLED.`,
+      status: 'Cancelled',
+      order
+    });
+  }
+
+  res.json({ message: 'Barcode processed', order });
+};
+

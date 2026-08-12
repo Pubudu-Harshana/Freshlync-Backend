@@ -1,0 +1,87 @@
+OVERVIEW
+--------
+This multi-output XGBoost model predicts both `quantity_sold` AND `price` simultaneously
+using order features (product_name, category, day_of_week, is_holiday, weather_condition).
+The same data pipeline is used for the Linear Regression baseline for fair comparison.
+
+KEY RESULTS
+-----------
+                               Test RMSE     Test RMSE
+Model                          (qty_sold)    (price)       Train R2    Test R2
+Linear Regression (Baseline)   13.38         232.01         0.9126     0.9147
+XGBoost (Default)              11.27         243.76         0.9387     0.9191
+XGBoost (Tuned)                12.49         232.39         0.9230     0.9189
+
+INTERPRETATION
+--------------
+1. MULTI-OUTPUT CAPABILITY:
+   - The model now predicts both quantity_sold and price at the same time.
+   - Uses sklearn's MultiOutputRegressor wrapping XGBRegressor internally.
+   - Each target gets its own XGBoost model trained independently.
+
+2. quantity_sold PREDICTIONS:
+   - Default XGBoost shows overfitting (low train RMSE, higher test RMSE).
+   - Tuning regularizes the model and improves generalization.
+   - Feature importance for quantity_sold helps identify sales drivers.
+
+3. price PREDICTIONS:
+   - Price is predicted from the same categorical features.
+   - Relative performance can be compared against quantity_sold accuracy.
+   - Feature importance for price reveals what drives pricing patterns.
+
+4. TOP PREDICTIVE FEATURES (per target):
+   - Each target may have different important features.
+   - is_holiday, weather_condition, and product_name are key drivers.
+   - Feature importance charts show which features matter for each target.
+
+5. MODEL COMPLEXITY TRADE-OFFS:
+   - MultiOutputRegressor with XGBoost captures non-linear patterns.
+   - Linear Regression baseline provides a stable reference point.
+   - Tuning helps balance bias-variance for both targets.
+
+CHARTS GENERATED (14 total)
+----------------------------
+Quantity Sold (6 charts):
+  1. default_actual_vs_predicted_qty.png
+  2. default_residual_plot_qty.png
+  3. default_error_distribution_qty.png
+  4. tuned_actual_vs_predicted_qty.png
+  5. tuned_residual_plot_qty.png
+  6. tuned_error_distribution_qty.png
+
+Price (6 charts):
+  7. default_actual_vs_predicted_price.png
+  8. default_residual_plot_price.png
+  9. default_error_distribution_price.png
+ 10. tuned_actual_vs_predicted_price.png
+ 11. tuned_residual_plot_price.png
+ 12. tuned_error_distribution_price.png
+
+Comparison (2 charts):
+ 13. rmse_comparison.png
+ 14. r2_comparison.png
+
+Feature Importance (2 per target):
+ 15. feature_importance_quantity_sold.png
+ 16. feature_importance_price.png
+
+BEST HYPERPARAMETERS
+--------------------
+{
+  "subsample": 0.6,
+  "reg_lambda": 3,
+  "reg_alpha": 0,
+  "n_estimators": 100,
+  "min_child_weight": 5,
+  "max_depth": 3,
+  "learning_rate": 0.05,
+  "colsample_bytree": 0.8
+}
+
+RECOMMENDATIONS
+---------------
+- Use the tuned XGBoost for joint quantity_sold + price predictions.
+- Analyze feature importance per target separately to understand what
+  drives each outcome.
+- If data volume grows, re-tune since XGBoost benefits from more data.
+- Consider adding lag or rolling features for time-series dynamics.

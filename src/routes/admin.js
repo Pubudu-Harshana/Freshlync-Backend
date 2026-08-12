@@ -11,7 +11,8 @@ const {
   getDemandForecast,
   getRegionalInsights,
   getSupplierForecasts,
-  getAIRecommendations
+  getAIRecommendations,
+  getAIRoadmap
 } = require('../controllers/adminController');
 
 router.get('/stats',       protect, requireRole('admin'), getPlatformStats);
@@ -26,5 +27,7 @@ router.get('/predictions/forecast', protect, requireRole('admin'), getDemandFore
 router.get('/predictions/regions', protect, requireRole('admin'), getRegionalInsights);
 router.get('/predictions/suppliers', protect, requireRole('admin'), getSupplierForecasts);
 router.get('/predictions/recommendations', protect, requireRole('admin'), getAIRecommendations);
+router.get('/predictions/ai-roadmap', protect, requireRole('admin'), getAIRoadmap);
+
 
 module.exports = router;
