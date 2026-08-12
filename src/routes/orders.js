@@ -3,7 +3,7 @@ const router  = express.Router();
 const multer  = require('multer');
 const path    = require('path');
 const { protect, requireRole } = require('../middleware/auth');
-const { getOrders, getOrder, placeOrder, updateStatus, verifyPayment, reuploadSlip } = require('../controllers/orderController');
+const { getOrders, getOrder, placeOrder, updateStatus, verifyPayment, reuploadSlip, scanBarcode } = require('../controllers/orderController');
 
 // Multer – save uploads to /uploads folder
 const storage = multer.diskStorage({
@@ -28,9 +28,11 @@ const upload = multer({
 });
 
 router.get('/',        protect, getOrders);
+router.post('/scan-barcode', protect, scanBarcode);
 router.get('/:id',     protect, getOrder);
 router.post('/',       protect, requireRole('buyer'), placeOrder);
 router.put('/:id/status', protect, requireRole('supplier', 'admin'), updateStatus);
+
 
 // Payment Approval Routes
 router.post('/upload-slip', protect, requireRole('buyer'), (req, res) => {

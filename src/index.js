@@ -22,6 +22,7 @@ const notificationRoutes = require('./routes/notifications');
 const reviewRoutes    = require('./routes/reviews');
 const chatRoutes      = require('./routes/chat');
 const billingRoutes   = require('./routes/billing');
+const ticketRoutes    = require('./routes/tickets');
 
 // Connect to MongoDB Atlas
 connectDB();
@@ -82,6 +83,8 @@ app.use('/api/notifications', notificationRoutes);
 app.use('/api/reviews',   reviewRoutes);
 app.use('/api/chat',      chatRoutes);
 app.use('/api/billing',   billingRoutes);
+app.use('/api/tickets',   ticketRoutes);
+
 
 // Health check
 app.get('/api/health', (req, res) => res.json({ status: 'ok', time: new Date() }));
@@ -89,7 +92,33 @@ app.get('/api/health', (req, res) => res.json({ status: 'ok', time: new Date() }
 // Global error handler
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`🚀 FreshLync API running on http://localhost:${PORT}`);
+const http = require('http');
+const { Server } = require('socket.io');
+
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: allowedOrigins,
+    credentials: true,
+  }
 });
+
+app.set('io', io);
+
+io.on('connection', (socket) => {
+  console.log('⚡ WebSockets client connected:', socket.id);
+  
+  socket.on('join_user_room', (userId) => {
+    if (userId) socket.join(`user_${userId}`);
+  });
+
+  socket.on('disconnect', () => {
+    // client disconnected
+  });
+});
+
+const PORT = process.env.PORT || 5000;
+server.listen(PORT, () => {
+  console.log(`🚀 FreshLync API & WebSockets running on http://localhost:${PORT}`);
+});
+

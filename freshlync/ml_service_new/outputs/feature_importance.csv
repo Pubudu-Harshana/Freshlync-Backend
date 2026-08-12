@@ -1,0 +1,20 @@
+Feature,Importance
+remainder__is_holiday,0.2437743
+cat__weather_condition_rainy,0.12220542
+remainder__price,0.05464678
+cat__product_name_Potato,0.049064096
+cat__product_name_Tuna,0.043469086
+cat__category_meat,0.042744257
+cat__product_name_Pork,0.04035061
+cat__product_name_Carrot,0.03713271
+cat__day_of_week_Sunday,0.036688443
+cat__day_of_week_Thursday,0.036195613
+cat__product_name_Seer Fish,0.036047585
+cat__day_of_week_Wednesday,0.035984315
+cat__product_name_Tomato,0.033585373
+cat__category_vegetable,0.033412796
+cat__day_of_week_Tuesday,0.032773927
+cat__weather_condition_sunny,0.03250451
+cat__day_of_week_Monday,0.0323193
+cat__product_name_Chicken,0.030251414
+cat__day_of_week_Saturday,0.026849465

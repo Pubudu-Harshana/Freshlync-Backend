@@ -55,7 +55,15 @@ const orderSchema = new mongoose.Schema({
     type: String,
     enum: ['Pending Verification', 'Approved', 'Rejected'],
     default: 'Pending Verification'
-  }
+  },
+
+  trackingBarcode: { type: String, unique: true, sparse: true },
+  scanHistory: [{
+    status: String,
+    scannedBy: String,
+    scannedAt: { type: Date, default: Date.now }
+  }]
 }, { timestamps: true });
+
 
 module.exports = mongoose.model('Order', orderSchema);
