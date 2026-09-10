@@ -12,8 +12,8 @@ exports.register = async (req, res) => {
   const exists = await User.findOne({ email });
   if (exists) return res.status(400).json({ message: 'Email already registered' });
 
-  // Security: Only allow buyer or supplier on self-registration — admin cannot be self-assigned
-  const allowedRoles = ['buyer', 'supplier'];
+  // Security: Only allow buyer, supplier, or driver on self-registration — admin cannot be self-assigned
+  const allowedRoles = ['buyer', 'supplier', 'driver'];
   const assignedRole = allowedRoles.includes(role) ? role : 'buyer';
 
   const user = await User.create({
@@ -344,7 +344,7 @@ exports.googleLogin = async (req, res) => {
     if (!user) {
       isNewUser = true;
       const randomPassword = crypto.randomBytes(16).toString('hex');
-      const assignedRole = ['buyer', 'supplier'].includes(role) ? role : 'buyer';
+      const assignedRole = ['buyer', 'supplier', 'driver'].includes(role) ? role : 'buyer';
       user = await User.create({
         name,
         email,
