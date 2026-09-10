@@ -290,9 +290,16 @@ exports.getUsers = async (req, res) => {
   ];
 
   const skip = (parseInt(page) - 1) * parseInt(limit);
-  const [users, total] = await Promise.all([
+  const [users, total, counts] = await Promise.all([
     User.find(query).select('-password').sort({ createdAt: -1 }).skip(skip).limit(parseInt(limit)),
     User.countDocuments(query),
+    Promise.all([
+      User.countDocuments(),
+      User.countDocuments({ role: 'buyer' }),
+      User.countDocuments({ role: 'supplier' }),
+      User.countDocuments({ role: 'driver' }),
+      User.countDocuments({ role: 'admin' }),
+    ]).then(([all, buyer, supplier, driver, admin]) => ({ all, buyer, supplier, driver, admin }))
   ]);
 
   const usersWithStats = [];
@@ -361,12 +368,17 @@ exports.getUsers = async (req, res) => {
       stats.totalOrders = totalOrders;
       stats.favoriteCategory = favoriteCategory !== 'None' ? favoriteCategory : '—';
       stats.disputes = 0;
+    } else if (u.role === 'driver') {
+      const deliveredTrips = await Order.countDocuments({ status: 'Delivered' });
+      const activeTrips = await Order.countDocuments({ status: 'In Transit' });
+      stats.deliveredTrips = deliveredTrips;
+      stats.activeTrips = activeTrips;
     }
     userObj.stats = stats;
     usersWithStats.push(userObj);
   }
 
-  res.json({ users: usersWithStats, total });
+  res.json({ users: usersWithStats, total, counts });
 };
 
 // PUT /api/admin/margin
