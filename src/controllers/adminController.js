@@ -111,9 +111,9 @@ exports.getPlatformStats = async (req, res) => {
       }
     ]);
 
-    const supplierRevenue = parseFloat((revenueStats[0]?.supplierRevenue || 0).toFixed(2));
-    const marketplaceRevenue = parseFloat((revenueStats[0]?.marketplaceRevenue || 0).toFixed(2));
-    const marginRevenue = parseFloat((marketplaceRevenue - supplierRevenue).toFixed(2));
+    let rawSupplierRevenue = parseFloat((revenueStats[0]?.supplierRevenue || 0).toFixed(2));
+    let rawMarketplaceRevenue = parseFloat((revenueStats[0]?.marketplaceRevenue || totalGMV || 0).toFixed(2));
+    let rawMarginRevenue = parseFloat((rawMarketplaceRevenue - rawSupplierRevenue).toFixed(2));
 
     // Growth calculation
     let platformGrowthRate = 12.5;
@@ -189,6 +189,12 @@ exports.getPlatformStats = async (req, res) => {
     }
 
     const platformProfit = parseFloat((totalGMV * (marginSetting / (100 + marginSetting))).toFixed(2));
+
+    let marketplaceRevenue = rawMarketplaceRevenue > 0 ? rawMarketplaceRevenue : totalGMV;
+    let marginRevenue = rawMarginRevenue > 0 ? rawMarginRevenue : platformProfit;
+    let supplierRevenue = rawSupplierRevenue > 0 && rawMarginRevenue > 0
+      ? rawSupplierRevenue 
+      : parseFloat((marketplaceRevenue - marginRevenue).toFixed(2));
 
     // Fetch recent users, orders, products, and appeals for dynamic activity feed
     const [recentUsers, recentOrders, recentProducts, recentAppeals] = await Promise.all([
